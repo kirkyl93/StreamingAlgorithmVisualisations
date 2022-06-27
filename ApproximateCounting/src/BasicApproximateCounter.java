@@ -31,13 +31,13 @@ public class BasicApproximateCounter {
 
         // Merges only work when the two counters have the same update probability.
         if (bac.getExpectedIterationsPerUpdate() != expectedIterationsPerUpdate) {
-            throw new RuntimeException("The counter update values must have the same update probability to be merged");
+            System.out.println("Only counters with the same expected iterations per update can be merged");
+            return;
         }
 
         timesUpdated += bac.getTimesUpdated();
 
     }
-
 
     public long getCount() {
         return Math.round(timesUpdated * expectedIterationsPerUpdate);
