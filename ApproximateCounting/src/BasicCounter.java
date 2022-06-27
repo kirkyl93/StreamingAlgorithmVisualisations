@@ -1,12 +1,14 @@
+// The simplest count possible. When using the long primitive, we can store a maximum value of 2^63 - 1
+
 public class BasicCounter {
 
-    private int count = 0;
+    private long count = 0;
 
     public void update() {
         count += 1;
     }
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
