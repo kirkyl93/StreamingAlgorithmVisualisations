@@ -12,10 +12,11 @@ public class BasicApproximateCounter {
     Random rand = new Random();
 
     public BasicApproximateCounter(double expectedIterationsPerUpdate) {
-        if (expectedIterationsPerUpdate <= 1) {
-            throw new RuntimeException("An update value <= 1 becomes a BasicCounter - there is no randomness here");
-        }
-        this.expectedIterationsPerUpdate = expectedIterationsPerUpdate;
+
+        // In cases where the expectedIterationsPerUpdate is given as < 1, we set its value to 1 and observe that the
+        // counter behaves exactly the same as a BasicCounter
+
+        this.expectedIterationsPerUpdate = Math.max(1, expectedIterationsPerUpdate);
         updateProbability = 1 / expectedIterationsPerUpdate;
     }
 
@@ -30,7 +31,7 @@ public class BasicApproximateCounter {
 
         // Merges only work when the two counters have the same update probability.
         if (bac.getExpectedIterationsPerUpdate() != expectedIterationsPerUpdate) {
-            throw new RuntimeException("The counter update values must have the same update probability");
+            throw new RuntimeException("The counter update values must have the same update probability to be merged");
         }
 
         timesUpdated += bac.getTimesUpdated();
