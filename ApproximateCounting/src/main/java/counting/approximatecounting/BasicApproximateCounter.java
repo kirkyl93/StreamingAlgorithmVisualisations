@@ -1,10 +1,12 @@
+package counting.approximatecounting;
+
 import java.util.Random;
 
 // This counter introduces an element of randomness (and therefore approximation) to save space.
 // Here, the user enters the expected iterations per update. This number has to be > 1 for the algorithm to not
 // become a BasicCounter.
 
-public class BasicApproximateCounter {
+public class BasicApproximateCounter implements Counter {
 
     long timesUpdated = 0;
     double expectedIterationsPerUpdate;

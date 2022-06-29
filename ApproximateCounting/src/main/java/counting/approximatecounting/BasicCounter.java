@@ -1,6 +1,8 @@
+package counting.approximatecounting;
+
 // The simplest count possible. When using the long primitive, we can store a maximum value of 2^63 - 1
 
-public class BasicCounter {
+public class BasicCounter implements Counter {
 
     private long count = 0;
 
