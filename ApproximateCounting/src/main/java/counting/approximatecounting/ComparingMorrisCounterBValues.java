@@ -89,8 +89,6 @@ public class ComparingMorrisCounterBValues extends Application {
                         sums.set(i, sums.get(i) + mcCount);
                         updates.set(i, updates.get(i) + updateCount);
 
-                        System.out.println(mcCount);
-
                         for (int k = 0; k < UPDATES_PER_FRAME; k++) {
                             mc.update();
                         }
@@ -102,8 +100,6 @@ public class ComparingMorrisCounterBValues extends Application {
                 for (int i = 0; i < NUMBER_OF_LINES; i++) {
                     double averageCount = (double) sums.get(i) / NUMBER_OF_COUNTERS;
                     double averageUpdates = (double) updates.get(i) / NUMBER_OF_COUNTERS;
-                    System.out.println(averageCount);
-                    System.out.println(averageUpdates);
                     morrisLines.get(i).getData().add(new XYChart.Data<>(count, averageCount));
                     updateLines.get(i).getData().add(new XYChart.Data<>(count, averageUpdates));
                 }
