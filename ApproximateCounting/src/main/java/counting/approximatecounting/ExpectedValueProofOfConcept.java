@@ -10,25 +10,30 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+
+// This is a proof of concept that the expected values of the Morris Counter and approximate counters equal the true
+// count. The higher the number of counters entered, the closer the lines should run to the true count.
+
+
 public class ExpectedValueProofOfConcept extends Application {
     @Override
     public void start(Stage stage) {
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
         // Approximate Counters simultaneously and take their average.
-        final int NUMBER_OF_COUNTERS = 100;
+        final int NUMBER_OF_COUNTERS = 5;
 
         // Set the value to which our counters count to.
-        final int COUNT_TO_VALUE = 50000;
+        final int COUNT_TO_VALUE = 500000;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
-        final int UPDATES_PER_FRAME = 30;
+        final int UPDATES_PER_FRAME = 3000;
 
         // Set the b value in Morris counter (see MorrisCounter class). In Morris' original formulation,
         // this is set to 2.
         final double MORRIS_B_VALUE = 2;
 
-        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 128;
+        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 5;
 
         // Prepare line chart
         stage.setTitle("Expected value proof of concept");
@@ -65,12 +70,12 @@ public class ExpectedValueProofOfConcept extends Application {
 
             @Override
             public void handle(long current) {
-                long basicApproximateSum = 0;
-                long morrisSum = 0;
 
                 if (count > COUNT_TO_VALUE) {
                     return;
                 }
+                long basicApproximateSum = 0;
+                long morrisSum = 0;
 
                 // Retrieve counter values and update
                 for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
