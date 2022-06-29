@@ -14,12 +14,23 @@ public class ExpectedValueProofOfConcept extends Application {
     @Override
     public void start(Stage stage) {
 
+        // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
+        // Approximate Counters simultaneously and take their average.
         final int NUMBER_OF_COUNTERS = 100;
-        final int COUNT_TO_VALUE = 50000;
-        final int UPDATES_PER_FRAME = 30;
-        final double MORRIS_B_VALUE = 1.1;
-        final double APPROXIMATE_COUNT_VALUE = 128;
 
+        // Set the value to which our counters count to.
+        final int COUNT_TO_VALUE = 50000;
+
+        // Set the number of updates made to our counters before refreshing the graph visualisation.
+        final int UPDATES_PER_FRAME = 30;
+
+        // Set the b value in Morris counter (see MorrisCounter class). In Morris' original formulation,
+        // this is set to 2.
+        final double MORRIS_B_VALUE = 2;
+
+        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 128;
+
+        // Prepare line chart
         stage.setTitle("Expected value proof of concept");
         final NumberAxis xAXIS = new NumberAxis();
         final NumberAxis yAXIS = new NumberAxis();
@@ -29,6 +40,8 @@ public class ExpectedValueProofOfConcept extends Application {
         LINE_CHART.setTitle("Expected value proof of concept");
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);
+
+        // Prepare series data on line chart for our counters
         XYChart.Series<Number, Number> basicCounterLine = new XYChart.Series<>();
         basicCounterLine.setName("Basic Counter");
         XYChart.Series<Number, Number> basicApproximateCounterLine = new XYChart.Series<>();
@@ -39,12 +52,11 @@ public class ExpectedValueProofOfConcept extends Application {
         LINE_CHART.getData().add(basicApproximateCounterLine);
         LINE_CHART.getData().add(morrisCounterLine);
 
+        // Create our counters
         ArrayList<BasicApproximateCounter> basicApproximateCounters = new ArrayList<>();
         ArrayList<MorrisCounter> morrisCounters = new ArrayList<>();
-
-
         for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
-            basicApproximateCounters.add(new BasicApproximateCounter(APPROXIMATE_COUNT_VALUE));
+            basicApproximateCounters.add(new BasicApproximateCounter(APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE));
             morrisCounters.add(new MorrisCounter(MORRIS_B_VALUE));
         }
 
@@ -60,6 +72,7 @@ public class ExpectedValueProofOfConcept extends Application {
                     return;
                 }
 
+                // Retrieve counter values and update
                 for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
                     BasicApproximateCounter bac = basicApproximateCounters.get(i);
                     basicApproximateSum += bac.getCount();
@@ -71,9 +84,13 @@ public class ExpectedValueProofOfConcept extends Application {
                     }
                 }
 
+
+                // Find average for our counters
                 double basicApproximateAverage = (double) basicApproximateSum / NUMBER_OF_COUNTERS;
                 double morrisAverage = (double) morrisSum / NUMBER_OF_COUNTERS;
 
+
+                // Add to line chart and visualise
                 basicCounterLine.getData().add(new XYChart.Data<>(count, count));
                 basicApproximateCounterLine.getData().add(new XYChart.Data<>(count, basicApproximateAverage));
                 morrisCounterLine.getData().add(new XYChart.Data<>(count, morrisAverage));
