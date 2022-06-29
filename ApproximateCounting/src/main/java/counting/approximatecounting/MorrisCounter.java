@@ -52,6 +52,10 @@ public class MorrisCounter {
         return Math.round((Math.pow(b, timesUpdated) - 1) / (b - 1));
     }
 
+    public long getTimesUpdated() {
+        return timesUpdated;
+    }
+
     public double getB() {
         return b;
     }
