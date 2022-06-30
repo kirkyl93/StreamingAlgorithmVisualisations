@@ -16,17 +16,17 @@ public class ComparingMorrisCounterBValues extends Application {
     public void start(Stage stage) {
 
         // Set the b values for the lines
-        final double[] B_VALUES = {1.05, 1.2, 1.5, 4};
+        final double[] B_VALUES = {1.1, 1.5};
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
         // Approximate Counters simultaneously and take their average.
         final int NUMBER_OF_COUNTERS = 1;
 
         // Set the value to which our counters count to.
-        final long COUNT_TO_VALUE = 200000L;
+        final long COUNT_TO_VALUE = 2500000000L;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
-        final int UPDATES_PER_FRAME = 100;
+        final int UPDATES_PER_FRAME = 1500000;
 
         // Prepare line chart
         stage.setTitle("Comparing B values in Morris Counter");
@@ -39,10 +39,16 @@ public class ComparingMorrisCounterBValues extends Application {
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);
 
-        XYChart.Series<Number, Number> basicCounterLine = new XYChart.Series<>();
-        basicCounterLine.setName("Basic Counter");
-        LINE_CHART.getData().add(basicCounterLine);
-
+        Stage secondStage = new Stage();
+        secondStage.setTitle("Comparing updates per B value");
+        final NumberAxis xAXIS2 = new NumberAxis();
+        final NumberAxis yAXIS2 = new NumberAxis();
+        xAXIS2.setLabel("True count");
+        yAXIS2.setLabel("Number of updates");
+        final LineChart<Number, Number> LINE_CHART2 = new LineChart<>(xAXIS2, yAXIS2);
+        LINE_CHART2.setTitle("Comparing updates per B value");
+        LINE_CHART2.setAnimated(false);
+        LINE_CHART2.setCreateSymbols(false);
 
         ArrayList<XYChart.Series<Number,Number>> morrisLines = new ArrayList<>();
         ArrayList<XYChart.Series<Number, Number>> updateLines = new ArrayList<>();
@@ -57,12 +63,16 @@ public class ComparingMorrisCounterBValues extends Application {
             morrisLines.add(morrisLine);
             updateLines.add(lineUpdate);
             LINE_CHART.getData().add(morrisLine);
-            LINE_CHART.getData().add(lineUpdate);
+            LINE_CHART2.getData().add(lineUpdate);
             morrisCounters.add(new ArrayList<>());
             for (int j = 0; j < NUMBER_OF_COUNTERS; j++) {
                 morrisCounters.get(i).add(new MorrisCounter(B_VALUES[i]));
             }
         }
+
+        XYChart.Series<Number, Number> basicCounterLine = new XYChart.Series<>();
+        basicCounterLine.setName("Basic Counter");
+        LINE_CHART.getData().add(basicCounterLine);
 
         new AnimationTimer() {
             private long count;
@@ -115,6 +125,9 @@ public class ComparingMorrisCounterBValues extends Application {
         stage.setScene(scene);
         stage.show();
 
+        Scene scene2 = new Scene(LINE_CHART2, 800, 600);
+        secondStage.setScene(scene2);
+        secondStage.show();
     }
 
 

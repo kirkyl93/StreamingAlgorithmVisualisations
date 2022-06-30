@@ -21,19 +21,19 @@ public class ExpectedValueProofOfConcept extends Application {
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
         // Approximate Counters simultaneously and take their average.
-        final int NUMBER_OF_COUNTERS = 5;
+        final int NUMBER_OF_COUNTERS = 10000;
 
         // Set the value to which our counters count to.
-        final int COUNT_TO_VALUE = 500000;
+        final long COUNT_TO_VALUE = 50000L;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
-        final int UPDATES_PER_FRAME = 3000;
+        final int UPDATES_PER_FRAME = 30;
 
         // Set the b value in Morris counter (see MorrisCounter class). In Morris' original formulation,
         // this is set to 2.
         final double MORRIS_B_VALUE = 2;
 
-        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 5;
+        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 6;
 
         // Prepare line chart
         stage.setTitle("Expected value proof of concept");
@@ -45,6 +45,7 @@ public class ExpectedValueProofOfConcept extends Application {
         LINE_CHART.setTitle("Expected value proof of concept");
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);
+
 
         // Prepare series data on line chart for our counters
         XYChart.Series<Number, Number> basicCounterLine = new XYChart.Series<>();
