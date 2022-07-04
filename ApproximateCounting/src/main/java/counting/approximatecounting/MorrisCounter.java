@@ -34,11 +34,8 @@ public class MorrisCounter {
         long mostUpdates = Math.max(timesUpdated, mc.timesUpdated);
         long leastUpdates = Math.max(timesUpdated, mc.timesUpdated);
 
-        System.out.println(mostUpdates);
-        System.out.println(leastUpdates);
         for (long i = 0; i < leastUpdates; i++) {
             double y = rand.nextDouble();
-            System.out.println(Math.pow(b, i - mostUpdates));
             if (y < Math.pow(b, i - mostUpdates)) {
                 mostUpdates++;
             }
