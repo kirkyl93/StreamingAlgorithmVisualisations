@@ -24,7 +24,7 @@ public class ExpectedValueProofOfConcept extends Application {
         final int NUMBER_OF_COUNTERS = 10000;
 
         // Set the value to which our counters count to.
-        final long COUNT_TO_VALUE = 50000L;
+        final long COUNT_TO_VALUE = 50000000L;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
         final int UPDATES_PER_FRAME = 30;
