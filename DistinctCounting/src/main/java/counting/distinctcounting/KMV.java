@@ -1,7 +1,6 @@
 package counting.distinctcounting;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
@@ -10,7 +9,7 @@ public class KMV {
     private final PriorityQueue<Long> minimumHashValues = new PriorityQueue<>(Collections.reverseOrder());
     private final HashSet<Long> hashValues = new HashSet<>();
     private final int kMinimumValues;
-    private final PairwiseHash hashFunction = new PairwiseHash();
+    private final FourwiseHash hashFunction = new FourwiseHash();
 
     public KMV(int kMinimumValues) {
         this.kMinimumValues = kMinimumValues;

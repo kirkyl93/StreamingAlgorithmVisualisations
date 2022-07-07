@@ -21,19 +21,19 @@ public class ExpectedValueProofOfConcept extends Application {
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
         // Approximate Counters simultaneously and take their average.
-        final int NUMBER_OF_COUNTERS = 10000;
+        final int NUMBER_OF_COUNTERS = 1;
 
         // Set the value to which our counters count to.
-        final long COUNT_TO_VALUE = 50000000L;
+        final long COUNT_TO_VALUE = 5000000000L;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
-        final int UPDATES_PER_FRAME = 30;
+        final int UPDATES_PER_FRAME = 300000;
 
         // Set the b value in Morris counter (see MorrisCounter class). In Morris' original formulation,
         // this is set to 2.
-        final double MORRIS_B_VALUE = 2;
+        final double MORRIS_B_VALUE = 1.000000001;
 
-        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 6;
+        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 100000000;
 
         // Prepare line chart
         stage.setTitle("Expected value proof of concept");
