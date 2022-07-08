@@ -2,6 +2,7 @@ package counting.distinctcounting;
 
 import java.util.Random;
 
+
 public class PairwiseHash {
 
     private final long p = 3727459247L;
@@ -16,7 +17,7 @@ public class PairwiseHash {
 
     public long hash(long x) {
 
-        return (a * x + b) % p;
+        return Math.abs(a * x + b) % p;
     }
 
     public long getPrime() {

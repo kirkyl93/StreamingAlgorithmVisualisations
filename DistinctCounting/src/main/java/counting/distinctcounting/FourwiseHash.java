@@ -19,7 +19,7 @@ public class FourwiseHash {
     }
 
     public long hash(long x) {
-        return ((long) Math.pow(x * a, 3) + (long) Math.pow(x * b, 2) + (x * c) + d) % p;
+        return Math.abs( ((long) Math.pow(x * a, 3) + (long) Math.pow(x * b, 2) + (x * c) + d) % p);
     }
 
     public long getPrime() {

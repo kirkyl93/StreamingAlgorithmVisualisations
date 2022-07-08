@@ -4,14 +4,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-public class KMV {
+public class PairwiseKMV {
 
     private final PriorityQueue<Long> minimumHashValues = new PriorityQueue<>(Collections.reverseOrder());
     private final HashSet<Long> hashValues = new HashSet<>();
     private final int kMinimumValues;
-    private final FourwiseHash hashFunction = new FourwiseHash();
+    private final PairwiseHash hashFunction = new PairwiseHash();
 
-    public KMV(int kMinimumValues) {
+    public PairwiseKMV(int kMinimumValues) {
         this.kMinimumValues = kMinimumValues;
     }
 
@@ -46,5 +46,9 @@ public class KMV {
 
         double area_on_line = (double) hashFunction.getPrime() / minimumHashValues.peek();
         return Math.round((kMinimumValues - 1) * area_on_line);
+    }
+
+    public int getBytesUsed() {
+        return hashValues.size() * 16;
     }
 }

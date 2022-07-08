@@ -2,14 +2,12 @@ package counting.distinctcounting;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,13 +17,13 @@ public class ComparingKValuesKMV extends Application {
 
         Random rand = new Random();
 
-        final int[] K_VALUES = {50000};
+        final int[] K_VALUES = {1000, 5000, 10000};
 
-        final int NUMBER_OF_KMVS = 500;
+        final int NUMBER_OF_KMVS = 1;
 
         final long DISTINCT_COUNT = 100000000;
 
-        final int UPDATES_PER_FRAME = 1000;
+        final int UPDATES_PER_FRAME = 100000;
 
         stage.setTitle("Comparing k values - KMV");
         final NumberAxis distinctItems = new NumberAxis();
@@ -38,7 +36,7 @@ public class ComparingKValuesKMV extends Application {
         LINE_CHART.setCreateSymbols(false);
 
         ArrayList<XYChart.Series<Number,Number>> kmvLines = new ArrayList<>();
-        ArrayList<ArrayList<KMV>> kmvs = new ArrayList<>();
+        ArrayList<ArrayList<PairwiseKMV>> kmvs = new ArrayList<>();
 
         for (int i = 0; i < K_VALUES.length; i++) {
             XYChart.Series<Number, Number> kmvLine = new XYChart.Series<>();
@@ -47,7 +45,7 @@ public class ComparingKValuesKMV extends Application {
             LINE_CHART.getData().add(kmvLine);
             kmvs.add(new ArrayList<>());
             for (int j = 0; j < NUMBER_OF_KMVS; j++) {
-                kmvs.get(i).add(new KMV(K_VALUES[i]));
+                kmvs.get(i).add(new PairwiseKMV(K_VALUES[i]));
             }
         }
 
@@ -72,13 +70,13 @@ public class ComparingKValuesKMV extends Application {
 
                 ArrayList<Long> randomNumbersToAdd = new ArrayList<>();
                 for (int i = 0; i < UPDATES_PER_FRAME; i++) {
-                    randomNumbersToAdd.add(rand.nextLong(10000000L));
+                    randomNumbersToAdd.add(rand.nextLong(1000000000L));
                 }
 
                 for (int i = 0; i < K_VALUES.length; i++) {
-                    ArrayList<KMV> kmvArray = kmvs.get(i);
+                    ArrayList<PairwiseKMV> kmvArray = kmvs.get(i);
                     for (int j = 0; j < NUMBER_OF_KMVS; j++) {
-                        KMV kmv = kmvArray.get(j);
+                        PairwiseKMV kmv = kmvArray.get(j);
                         long estimate = kmv.query();
                         double percentageError = 0;
                         long distinctCount = trueDistinctCount.query();
