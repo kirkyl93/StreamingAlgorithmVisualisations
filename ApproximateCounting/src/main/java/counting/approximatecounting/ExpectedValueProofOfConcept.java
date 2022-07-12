@@ -33,7 +33,7 @@ public class ExpectedValueProofOfConcept extends Application {
         // this is set to 2.
         final double MORRIS_B_VALUE = 1.000000001;
 
-        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 100000000;
+        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 1;
 
         // Prepare line chart
         stage.setTitle("Expected value proof of concept");
@@ -72,6 +72,7 @@ public class ExpectedValueProofOfConcept extends Application {
             @Override
             public void handle(long current) {
 
+                // Terminate when our current count is greater than the count limit we set earlier
                 if (count > COUNT_TO_VALUE) {
                     return;
                 }
@@ -105,6 +106,7 @@ public class ExpectedValueProofOfConcept extends Application {
             }
         }.start();
 
+        //Set scene
         Scene scene = new Scene(LINE_CHART, 800, 600);
         stage.setScene(scene);
         stage.show();

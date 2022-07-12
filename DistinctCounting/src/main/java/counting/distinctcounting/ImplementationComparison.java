@@ -20,7 +20,11 @@ public class ImplementationComparison extends Application {
 
         Random rand = new Random();
 
-        final int K_VALUE = 10000;
+        final int KMV_K_VALUE = 100000;
+
+        final int CPC_LGK_VALUE = 12;
+
+        final int HLL_LGK_VALUE = 12;
 
         final long DISTINCT_COUNT = 100000000;
 
@@ -73,9 +77,9 @@ public class ImplementationComparison extends Application {
         LINE_CHART2.getData().add(thetaSpace);
 
         UpdateSketch thetaSketch = UpdateSketch.builder().build();
-        HllSketch hllSketch = new HllSketch(16);
-        PairwiseKMV kmvSketch = new PairwiseKMV(K_VALUE);
-        CpcSketch cpcSketch = new CpcSketch(16);
+        HllSketch hllSketch = new HllSketch(HLL_LGK_VALUE);
+        PairwiseKMV kmvSketch = new PairwiseKMV(KMV_K_VALUE);
+        CpcSketch cpcSketch = new CpcSketch(CPC_LGK_VALUE);
 
         BasicDistinctCounting trueDistinctCount = new BasicDistinctCounting();
 
@@ -85,12 +89,13 @@ public class ImplementationComparison extends Application {
             @Override
             public void handle(long current) {
 
+                // Terminate when our current count equals the count limit we set earlier
                 if (count >= DISTINCT_COUNT) {
                     return;
                 }
 
                 for (int i = 0; i < UPDATES_PER_FRAME; i++) {
-                    long randomNumber = rand.nextLong(10000000000L);
+                    long randomNumber = rand.nextLong();
                     thetaSketch.update(randomNumber);
                     hllSketch.update(randomNumber);
                     kmvSketch.update(randomNumber);

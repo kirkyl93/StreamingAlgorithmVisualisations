@@ -13,7 +13,7 @@ public class FourwiseKMV {
     private final FourwiseHash hashFunction = new FourwiseHash();
 
     public FourwiseKMV(int kMinimumValues) {
-        this.kMinimumValues = kMinimumValues;
+        this.kMinimumValues = kMinimumValues + 1;
     }
 
     public void update(long item) {

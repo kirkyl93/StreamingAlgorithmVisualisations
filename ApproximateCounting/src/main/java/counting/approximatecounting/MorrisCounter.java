@@ -27,7 +27,7 @@ public class MorrisCounter {
 
     public void merge(MorrisCounter mc) {
         if (mc.getB() != b) {
-            System.out.println("Only Morris Counters with the same b values can be merged");
+            System.err.println("Only Morris Counters with the same b values can be merged");
             return;
         }
 

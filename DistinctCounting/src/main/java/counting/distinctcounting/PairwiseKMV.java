@@ -12,7 +12,7 @@ public class PairwiseKMV {
     private final PairwiseHash hashFunction = new PairwiseHash();
 
     public PairwiseKMV(int kMinimumValues) {
-        this.kMinimumValues = kMinimumValues;
+        this.kMinimumValues = kMinimumValues + 1;
     }
 
     public void update(long item) {
