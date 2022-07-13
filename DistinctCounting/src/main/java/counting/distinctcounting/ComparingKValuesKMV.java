@@ -18,23 +18,23 @@ public class ComparingKValuesKMV extends Application {
         Random rand = new Random();
 
         // Add
-        final int[] K_VALUES = {10000};
+        final int[] K_VALUES = {10000, 20000};
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average
         // performance of our algorithm.
-        final int NUMBER_OF_KMVS = 20;
+        final int NUMBER_OF_KMVS = 200;
 
         // Set the number of distinct items we will count to until the algorithm terminates.
-        final long DISTINCT_COUNT = 12000;
+        final long DISTINCT_COUNT = 12000000;
 
         // Set the max number that our random number generator can generate. In order for the algorithm to work, this
         // has to be set higher than the DISTINCT_COUNT number.
-        final long UPPER_LIMIT_NUM_TO_ADD = 15000;
+        final long UPPER_LIMIT_NUM_TO_ADD = 150000000;
 
         // Set the number of updates made to our KMVs before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values.
-        final int UPDATES_PER_FRAME = 100;
+        final int UPDATES_PER_FRAME = 1000;
 
         // Prepare line chart
         stage.setTitle("Comparing k values - KMV");
