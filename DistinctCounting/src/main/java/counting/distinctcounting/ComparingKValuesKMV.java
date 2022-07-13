@@ -17,7 +17,7 @@ public class ComparingKValuesKMV extends Application {
 
         Random rand = new Random();
 
-        // Add
+        // Add the k values to compare
         final int[] K_VALUES = {10000, 20000};
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average

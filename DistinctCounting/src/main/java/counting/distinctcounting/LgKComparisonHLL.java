@@ -20,7 +20,7 @@ public class LgKComparisonHLL extends Application {
         Random rand = new Random();
 
         // Set the LgK values for our HLL sketches
-        final int[] lgKValues = {4, 6, 8, 16};
+        final int[] lgKValues = {4, 6, 8};
 
         // Set the number of distinct items we will count to until the algorithm terminates.
         final long DISTINCT_COUNT = 10000000000L;
