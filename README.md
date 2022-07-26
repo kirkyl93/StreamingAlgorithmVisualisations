@@ -1,0 +1,1 @@
+This library contains various implementations of streaming algorithms.
