@@ -5,7 +5,7 @@ import java.util.Random;
 // The MorrisCounter extends the idea of using randomisation to reduce the space required to store approximations
 //  of our counter.
 
-public class MorrisCounter {
+public class MorrisCounter implements Counter {
 
     long timesUpdated = 0;
     private final double b;
@@ -45,7 +45,7 @@ public class MorrisCounter {
 
     }
 
-    public long getCount() {
+    public long query() {
         return Math.round((Math.pow(b, timesUpdated) - 1) / (b - 1));
     }
 

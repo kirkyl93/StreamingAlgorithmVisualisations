@@ -19,7 +19,6 @@ public class CountMinSketchConservative extends CountMinSketch {
                 matrix[i][hashValue] = minMatrixValue + weight;
             }
         }
-
     }
 
 

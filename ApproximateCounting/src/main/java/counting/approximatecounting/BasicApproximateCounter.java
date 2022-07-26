@@ -41,7 +41,7 @@ public class BasicApproximateCounter implements Counter {
 
     }
 
-    public long getCount() {
+    public long query() {
         return Math.round(timesUpdated * expectedIterationsPerUpdate);
     }
 

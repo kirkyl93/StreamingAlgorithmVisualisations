@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class BasicFrequencyCounter {
 
-    private final HashMap<Long, Long> items = new HashMap<>();
+    final HashMap<Long, Long> items = new HashMap<>();
 
     public void update(long item, long weight) {
 

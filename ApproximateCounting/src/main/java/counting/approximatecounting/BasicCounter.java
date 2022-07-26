@@ -10,11 +10,11 @@ public class BasicCounter implements Counter {
         count += 1;
     }
 
-    public long getCount() {
+    public long query() {
         return count;
     }
 
     public void merge(BasicCounter bc) {
-        count += bc.getCount();
+        count += bc.query();
     }
 }

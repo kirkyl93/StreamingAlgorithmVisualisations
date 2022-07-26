@@ -24,10 +24,10 @@ public class ExpectedValueProofOfConcept extends Application {
         final int NUMBER_OF_COUNTERS = 1;
 
         // Set the value to which our counters count to.
-        final long COUNT_TO_VALUE = 5000000000L;
+        final long COUNT_TO_VALUE = 50;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
-        final int UPDATES_PER_FRAME = 300000;
+        final int UPDATES_PER_FRAME = 3;
 
         // Set the b value in Morris counter (see MorrisCounter class). In Morris' original formulation,
         // this is set to 2.
@@ -82,9 +82,9 @@ public class ExpectedValueProofOfConcept extends Application {
                 // Retrieve counter values and update
                 for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
                     BasicApproximateCounter bac = basicApproximateCounters.get(i);
-                    basicApproximateSum += bac.getCount();
+                    basicApproximateSum += bac.query();
                     MorrisCounter mc = morrisCounters.get(i);
-                    morrisSum += mc.getCount();
+                    morrisSum += mc.query();
                     for (int j = 0; j < UPDATES_PER_FRAME; j++) {
                         bac.update();
                         mc.update();
