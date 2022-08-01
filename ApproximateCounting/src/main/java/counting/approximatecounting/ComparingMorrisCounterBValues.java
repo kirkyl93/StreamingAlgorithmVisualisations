@@ -16,7 +16,7 @@ public class ComparingMorrisCounterBValues extends Application {
     public void start(Stage stage) {
 
         // Set the b values for the lines
-        final double[] B_VALUES = {1.033, 2};
+        final double[] B_VALUES = {1.0045};
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
         // simultaneously for each b_value and take their average.
@@ -69,7 +69,7 @@ public class ComparingMorrisCounterBValues extends Application {
         ArrayList<XYChart.Series<Number,Number>> morrisLines = new ArrayList<>();
         ArrayList<XYChart.Series<Number, Number>> updateLines = new ArrayList<>();
         ArrayList<XYChart.Series<Number, Number>> percentageErrorLines = new ArrayList<>();
-        ArrayList<ArrayList<MorrisCounter>> morrisCounters = new ArrayList<>();
+        ArrayList<ArrayList<MorrisCounter>> morrisCounters = new ArrayList<>(NUMBER_OF_COUNTERS);
 
 
         for (int i = 0; i < B_VALUES.length; i++) {

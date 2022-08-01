@@ -5,7 +5,7 @@ package counting.distinctcounting;
 
 import java.util.HashSet;
 
-public class BasicDistinctCounting {
+public class BasicDistinctCountingHash {
 
     private final HashSet<Long> items_seen = new HashSet<>();
 

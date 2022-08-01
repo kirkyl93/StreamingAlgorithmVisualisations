@@ -78,7 +78,7 @@ public class LgKComparisonHLL extends Application {
         }
 
         // Set up basic true distinct count
-        BasicDistinctCounting trueDistinctCount = new BasicDistinctCounting();
+        BasicDistinctCountingHash trueDistinctCount = new BasicDistinctCountingHash();
 
         new AnimationTimer() {
             private long currentCount;

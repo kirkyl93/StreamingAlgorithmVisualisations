@@ -97,7 +97,7 @@ public class ImplementationComparison extends Application {
         CpcSketch cpcSketch = new CpcSketch(CPC_LGK_VALUE);
 
         // Set up basic true distinct count
-        BasicDistinctCounting trueDistinctCount = new BasicDistinctCounting();
+        BasicDistinctCountingHash trueDistinctCount = new BasicDistinctCountingHash();
 
         new AnimationTimer() {
             private long currentCount;
