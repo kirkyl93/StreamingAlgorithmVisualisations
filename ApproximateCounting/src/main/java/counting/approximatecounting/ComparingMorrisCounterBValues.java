@@ -16,14 +16,14 @@ public class ComparingMorrisCounterBValues extends Application {
     public void start(Stage stage) {
 
         // Set the b values for the lines
-        final double[] B_VALUES = {1.0045};
+        final double[] B_VALUES = {1.001};
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
         // simultaneously for each b_value and take their average.
         final int NUMBER_OF_COUNTERS = 1;
 
         // Set the value to which our counters count to.
-        final long COUNT_TO_VALUE = 130000000000L;
+        final long COUNT_TO_VALUE = 5000000000L;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
@@ -116,9 +116,9 @@ public class ComparingMorrisCounterBValues extends Application {
                 }
 
                 // Prepare estimate, update and percentage error trackers
-                ArrayList<Long> morrisEstimates = new ArrayList<>();
+                ArrayList<Long> morrisEstimates = new ArrayList<>(NUMBER_OF_COUNTERS);
                 ArrayList<Long> updates = new ArrayList<>();
-                ArrayList<Double> percentageErrors = new ArrayList<>();
+                ArrayList<Double> percentageErrors = new ArrayList<>(NUMBER_OF_COUNTERS);
 
                 for (int i = 0; i < B_VALUES.length; i++) {
                     morrisEstimates.add(0L);

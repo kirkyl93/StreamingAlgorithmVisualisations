@@ -25,17 +25,18 @@ public class CountMinSketchesComparison extends Application {
 
         final int NUMBER_OF_HASH_FUNCTIONS = 8;
 
-        final int NUMBER_OF_SLOTS_PER_ROW = 1000;
+        final int NUMBER_OF_SLOTS_PER_ROW = 10000;
 
-        final long UNIQUE_ITEMS_TO_ADD = 100000000;
+        final long UNIQUE_ITEMS_TO_ADD = 1000000000;
 
-        final long MAX_ITEM_TO_ADD = 10000;
+        final long MAX_ITEM_TO_ADD = 100000000;
 
-        final double PROBABILITY_OF_LARGE_UPDATE_WEIGHT = 0.0000000000000001;
+        final double PROBABILITY_OF_LARGE_UPDATE_WEIGHT = 0.9;
 
-        final int MAX_WEIGHT_TO_ADD = 700;
+        final int MAX_WEIGHT_TO_ADD = 7000;
 
         final int UPDATES_PER_FRAME = 1000000;
+
 
         CountMinSketch cmOriginal = new CountMinSketchOriginal(NUMBER_OF_HASH_FUNCTIONS, NUMBER_OF_SLOTS_PER_ROW);
         CountMinSketch cmConservative = new CountMinSketchConservative(NUMBER_OF_HASH_FUNCTIONS, NUMBER_OF_SLOTS_PER_ROW);
@@ -66,6 +67,8 @@ public class CountMinSketchesComparison extends Application {
 
         new AnimationTimer() {
             private long currentDistinctCount;
+            private long totalCount;
+            private double maxError = 0;
 
             @Override
             public void handle(long current) {
@@ -78,11 +81,19 @@ public class CountMinSketchesComparison extends Application {
                 long cmConservativeAbsoluteError = 0;
                 long cmMeanAbsoluteError = 0;
 
+                System.out.println(totalCount);
+
+
+
+
                 for (Map.Entry<Long, Long> set: trueFrequencyCounter.items.entrySet()) {
                     long keyWeight = set.getValue();
                     cmOriginalAbsoluteError += Math.abs(keyWeight - cmOriginal.query(set.getKey()));
                     cmConservativeAbsoluteError += Math.abs(keyWeight - cmConservative.query(set.getKey()));
                     cmMeanAbsoluteError += Math.abs(keyWeight - cmMean.query(set.getKey()));
+
+                    System.out.println("total count is " + totalCount);
+                    System.out.println("Cm original error is: " + Math.abs(keyWeight - cmOriginal.query(set.getKey())));
                 }
 
                 double cmOriginalAverageError = 0;
@@ -106,8 +117,10 @@ public class CountMinSketchesComparison extends Application {
 
                     int itemWeight = 1;
                     if (rand.nextDouble() < PROBABILITY_OF_LARGE_UPDATE_WEIGHT) {
-                        itemWeight = rand.nextInt(1, MAX_WEIGHT_TO_ADD);
+                        itemWeight = rand.nextInt(MAX_WEIGHT_TO_ADD);
                     }
+
+                    totalCount += itemWeight;
 
                     trueFrequencyCounter.update(itemToAdd, itemWeight);
                     cmOriginal.update(itemToAdd, itemWeight);

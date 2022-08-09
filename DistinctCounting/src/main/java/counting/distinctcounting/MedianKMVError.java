@@ -9,16 +9,18 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
-public class ComparingKValuesKMV extends Application {
+public class MedianKMVError extends Application {
+
     @Override
     public void start(Stage stage) {
 
         Random rand = new Random();
 
-        // Add the k values to compare
-        final int[] K_VALUES = {1000, 10000};
+        // Add the k value to test
+        final int K_VALUE = 5000;
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average
         // performance of our algorithm.
@@ -34,34 +36,37 @@ public class ComparingKValuesKMV extends Application {
         // Set the number of updates made to our KMVs before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values.
-        final int UPDATES_PER_FRAME = 10000;
+        final int UPDATES_PER_FRAME = 1000;
 
         // Prepare line chart
-        stage.setTitle("Comparing k values - KMV");
+        stage.setTitle("Median and 90th percentile line - KMV");
         final NumberAxis distinctItems = new NumberAxis();
         final NumberAxis algorithmEstimate = new NumberAxis();
         distinctItems.setLabel("Distinct Items");
         algorithmEstimate.setLabel("Algorithm percentage error");
         final LineChart<Number, Number> LINE_CHART = new LineChart<>(distinctItems, algorithmEstimate);
-        LINE_CHART.setTitle("Comparing k values - KMV");
+        LINE_CHART.setTitle("Median and 90th percentile line - KMV");
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);
 
-        // Create array lists for our kmvlines and KMVs
-        ArrayList<XYChart.Series<Number,Number>> kmvLines = new ArrayList<>();
-        ArrayList<ArrayList<PairwiseKMV>> kmvs = new ArrayList<>();
+        // Set up lines for median and 90th percentile error
+        XYChart.Series<Number, Number> medianLine = new XYChart.Series<>();
+        medianLine.setName("Median Line");
+        XYChart.Series<Number, Number> percentile90Line = new XYChart.Series<>();
+        percentile90Line.setName("90th Percentile Line");
+        LINE_CHART.getData().add(medianLine);
+        LINE_CHART.getData().add(percentile90Line);
 
-        // Add kmvLine and KMVs to array lists
-        for (int i = 0; i < K_VALUES.length; i++) {
-            XYChart.Series<Number, Number> kmvLine = new XYChart.Series<>();
-            kmvLine.setName(Integer.toString(K_VALUES[i]));
-            kmvLines.add(kmvLine);
-            LINE_CHART.getData().add(kmvLine);
-            kmvs.add(new ArrayList<>(NUMBER_OF_KMVS));
-            for (int j = 0; j < NUMBER_OF_KMVS; j++) {
-                kmvs.get(i).add(new PairwiseKMV(K_VALUES[i]));
-            }
+        // Add KMVs to an array list
+
+        ArrayList<PairwiseKMV> kmvs = new ArrayList<>(NUMBER_OF_KMVS);
+        for (int i = 0; i < NUMBER_OF_KMVS; i++) {
+            kmvs.add(new PairwiseKMV(K_VALUE));
         }
+
+        int medianValue = NUMBER_OF_KMVS / 2;
+
+        int percentile90Value = (NUMBER_OF_KMVS / 10) * 9;
 
         // Set up basic true distinct count
         BasicDistinctCountingHash trueDistinctCount = new BasicDistinctCountingHash();
@@ -77,34 +82,37 @@ public class ComparingKValuesKMV extends Application {
                     return;
                 }
 
+                ArrayList<Long> kmvAbsoluteErrors = new ArrayList<>(NUMBER_OF_KMVS);
+
                 // Generate random numbers to add to KMVs
                 ArrayList<Long> randomNumbersToAdd = new ArrayList<>(UPDATES_PER_FRAME);
                 for (int i = 0; i < UPDATES_PER_FRAME; i++) {
                     randomNumbersToAdd.add(rand.nextLong(UPPER_LIMIT_NUM_TO_ADD));
                 }
 
-                // For each k value, sum up the percentage error from its KMVs
-                for (int i = 0; i < K_VALUES.length; i++) {
-                    double percentageErrorSum = 0;
-                    ArrayList<PairwiseKMV> kmvArray = kmvs.get(i);
-                    for (int j = 0; j < NUMBER_OF_KMVS; j++) {
-                        PairwiseKMV kmv = kmvArray.get(j);
-                        long estimate = kmv.query();
-                        long distinctCount = trueDistinctCount.query();
-                        if (distinctCount > 0) {
-                            percentageErrorSum += (double) Math.abs(distinctCount - estimate) / distinctCount * 100;
-                        }
-
-                        // Update each KMV with already generated random numbers
-                        for (int k = 0; k < UPDATES_PER_FRAME; k++) {
-                            kmv.update(randomNumbersToAdd.get(k));
-                        }
+                for (int i = 0; i < NUMBER_OF_KMVS; i++) {
+                    PairwiseKMV kmv = kmvs.get(i);
+                    kmvAbsoluteErrors.add(Math.abs(kmv.query() - trueDistinctCount.query()));
+                    for (int j = 0; j < UPDATES_PER_FRAME; j++) {
+                        kmv.update(randomNumbersToAdd.get(j));
                     }
-
-                    // Add percentage error to our line chart
-                    double percentageError = percentageErrorSum / NUMBER_OF_KMVS;
-                    kmvLines.get(i).getData().add(new XYChart.Data<>(trueDistinctCount.query(), percentageError));
                 }
+
+                // Sort absolute errors
+                Collections.sort(kmvAbsoluteErrors);
+
+                double medianPercentageError = 0;
+                double percentile90PercentageError = 0;
+
+                if (currentDistinctCount > 0) {
+                    medianPercentageError = (double) kmvAbsoluteErrors.get(medianValue) / currentDistinctCount * 100;
+                    percentile90PercentageError = (double) kmvAbsoluteErrors.get(percentile90Value) / currentDistinctCount * 100;
+                }
+                // Add median error to median line
+                medianLine.getData().add(new XYChart.Data<>(currentDistinctCount, medianPercentageError));
+
+                // Add 90th percentile error line to 90th percentile line
+                percentile90Line.getData().add(new XYChart.Data<>(currentDistinctCount, percentile90PercentageError));
 
                 // Update our true count with the already generated random numbers
                 for (int i = 0; i < UPDATES_PER_FRAME; i++) {
@@ -113,6 +121,7 @@ public class ComparingKValuesKMV extends Application {
 
                 // Update our current distinct count
                 currentDistinctCount = trueDistinctCount.query();
+
             }
         }.start();
 

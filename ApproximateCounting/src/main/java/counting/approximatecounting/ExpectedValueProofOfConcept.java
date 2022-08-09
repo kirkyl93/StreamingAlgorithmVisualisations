@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -21,27 +22,30 @@ public class ExpectedValueProofOfConcept extends Application {
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
         // Approximate Counters simultaneously and take their average.
-        final int NUMBER_OF_COUNTERS = 100000;
+        final int NUMBER_OF_COUNTERS = 10000;
 
         // Set the value to which our counters count to.
-        final long COUNT_TO_VALUE = 50000;
+        final long COUNT_TO_VALUE = 10000000;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
-        final int UPDATES_PER_FRAME = 3;
+        final int UPDATES_PER_FRAME = 1000;
 
         // Set the b value in Morris counter (see MorrisCounter class). In Morris' original formulation,
         // this is set to 2.
         final double MORRIS_B_VALUE = 2;
 
-        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 100;
+        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 10000;
 
         // Prepare line chart
         stage.setTitle("Expected value proof of concept");
         final NumberAxis xAXIS = new NumberAxis();
+        xAXIS.tickLabelFontProperty().set(Font.font(20));
         final NumberAxis yAXIS = new NumberAxis();
+        yAXIS.tickLabelFontProperty().set(Font.font(20));
         xAXIS.setLabel("True count");
         yAXIS.setLabel("Algorithm estimate");
         final LineChart<Number, Number> LINE_CHART = new LineChart<>(xAXIS, yAXIS);
+        LINE_CHART.setStyle("-fx-font-size: " + 24 + "px;");
         LINE_CHART.setTitle("Expected value proof of concept");
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);

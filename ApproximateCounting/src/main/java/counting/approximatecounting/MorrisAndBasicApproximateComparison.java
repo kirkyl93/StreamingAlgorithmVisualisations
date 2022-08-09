@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.lang.reflect.Array;
@@ -19,30 +20,33 @@ public class MorrisAndBasicApproximateComparison extends Application {
     public void start(Stage stage) {
 
         // Set the b value for the Morris Counters
-        final double B_VALUE = 1.03;
+        final double B_VALUE = 1.01;
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
         // and Basic Approximate Counters and take their average.
-        final int NUMBER_OF_COUNTERS = 1;
+        final int NUMBER_OF_COUNTERS = 10;
 
         // Set the update value for the Basic Approximate Counter
-        final int APPROXIMATE_COUNT_VALUE = 1000;
+        final int APPROXIMATE_COUNT_VALUE = 10000;
 
         // Set the value to which our counter counts to
-        final long COUNT_TO_VALUE = 10000000000L;
+        final long COUNT_TO_VALUE = 10000000;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values.
-        final int UPDATES_PER_FRAME = 10000000;
+        final int UPDATES_PER_FRAME = 1000;
 
         // Prepare percentage error line chart
         stage.setTitle("Comparing percentage error of Morris Counter to Basic Approximate Counter");
         final NumberAxis trueCount = new NumberAxis();
-        final NumberAxis algorithmEstimate = new NumberAxis();
+        trueCount.tickLabelFontProperty().set(Font.font(20));
+        final NumberAxis percentageError = new NumberAxis();
+        percentageError.tickLabelFontProperty().set(Font.font(20));
         trueCount.setLabel("True count");
-        algorithmEstimate.setLabel("Percentage error");
-        final LineChart<Number, Number> LINE_CHART_ERROR = new LineChart<>(trueCount, algorithmEstimate);
+        percentageError.setLabel("Percentage error");
+        final LineChart<Number, Number> LINE_CHART_ERROR = new LineChart<>(trueCount, percentageError);
+        LINE_CHART_ERROR.setStyle("-fx-font-size: " + 24 + "px;");
         LINE_CHART_ERROR.setTitle("Comparing percentage error of Morris Counter to Basic Approximate Counter");
         LINE_CHART_ERROR.setAnimated(false);
         LINE_CHART_ERROR.setCreateSymbols(false);
@@ -51,10 +55,13 @@ public class MorrisAndBasicApproximateComparison extends Application {
         Stage secondStage = new Stage();
         secondStage.setTitle("Comparing number of updates");
         final NumberAxis numberOfUpdates = new NumberAxis();
+        numberOfUpdates.tickLabelFontProperty().set(Font.font(20));
         final NumberAxis trueCount2 = new NumberAxis();
+        trueCount2.tickLabelFontProperty().set(Font.font(20));
         numberOfUpdates.setLabel("Number of updates");
         trueCount2.setLabel("True count");
         final LineChart<Number, Number> LINE_CHART_UPDATES = new LineChart<>(trueCount2, numberOfUpdates);
+        LINE_CHART_UPDATES.setStyle("-fx-font-size: " + 24 + "px;");
         LINE_CHART_UPDATES.setTitle("Comparing number of updates");
         LINE_CHART_UPDATES.setAnimated(false);
         LINE_CHART_UPDATES.setCreateSymbols(false);

@@ -22,13 +22,13 @@ public class ImplementationComparison extends Application {
 
         // Set the number of items we will store in our priority queue (the Kth value will be the item at the top
         // of the heap). The bigger this value, the more accurate our algorithm should be.
-        final int KMV_K_VALUE = 10;
+        final int KMV_K_VALUE = 10000;
 
         // Set the LgK value for our CPC sketch
-        final int CPC_LGK_VALUE = 8;
+        final int CPC_LGK_VALUE = 16;
 
         // Set the LgK value for our HyperLogLog sketch
-        final int HLL_LGK_VALUE = 8;
+        final int HLL_LGK_VALUE = 16;
 
         // Set the number of distinct items we will count to until the algorithm terminates
         final long DISTINCT_COUNT = 100000000;

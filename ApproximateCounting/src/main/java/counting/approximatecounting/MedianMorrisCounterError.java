@@ -16,7 +16,7 @@ public class MedianMorrisCounterError extends Application {
     public void start(Stage stage) {
 
         // Set the b value for the Morris Counters
-        final double B_VALUE = 5;
+        final double B_VALUE = 1.001;
 
         // Set the number of counters from which we will select the median and 90th percentile run
         final int NUMBER_OF_COUNTERS = 10000;
@@ -76,22 +76,22 @@ public class MedianMorrisCounterError extends Application {
                     return;
                 }
 
-                // Initialise array to store error percentages
-                double[] morrisPercentageErrors = new double[NUMBER_OF_COUNTERS];
+                // Initialise array to store absolute errors
+                long[] morrisErrors = new long[NUMBER_OF_COUNTERS];
 
 
-                // Retrieve Morris Counter estimates and calculate percentage error
+                // Retrieve Morris Counter estimates and calculate absolute error
                 for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
                     MorrisCounter mc = morrisCounters[i];
                     long mcCount = mc.query();
 
-                    double morrisPercentageError = 0;
+                    long morrisError;
 
-                    if (count > 0) {
-                        morrisPercentageError = (double) Math.abs(mcCount - count) / count * 100;
-                    }
 
-                    morrisPercentageErrors[i] = morrisPercentageError;
+                    morrisError = Math.abs(mcCount - count);
+
+
+                    morrisErrors[i] = morrisError;
 
                     // Update Morris Counters
                     for (int j = 0; j < UPDATES_PER_FRAME; j++) {
@@ -99,14 +99,24 @@ public class MedianMorrisCounterError extends Application {
                     }
                 }
 
-                // Sort percentage errors
-                Arrays.sort(morrisPercentageErrors);
+                // Sort absolute errors
+                Arrays.sort(morrisErrors);
+
+                double medianPercentageError = 0;
+                double percentile90PercentageError = 0;
+
+                if (count > 0) {
+                    medianPercentageError = (double) morrisErrors[medianValue] / count * 100;
+
+                    percentile90PercentageError = (double) morrisErrors[percentile90Value] / count * 100;
+                }
+
 
                 // Add median error to median line
-                medianLine.getData().add(new XYChart.Data<>(count, morrisPercentageErrors[medianValue]));
+                medianLine.getData().add(new XYChart.Data<>(count, medianPercentageError));
 
                 // Add 90th percentile error line to 90th percentile line
-                percentile90Line.getData().add(new XYChart.Data<>(count, morrisPercentageErrors[percentile90Value]));
+                percentile90Line.getData().add(new XYChart.Data<>(count, percentile90PercentageError));
 
                 // Update count
                 count += UPDATES_PER_FRAME;

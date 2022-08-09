@@ -1,54 +1,48 @@
 package counting.distinctcounting;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.PriorityQueue;
+
+import java.util.TreeSet;
 
 public class PairwiseKMV {
 
-    private final PriorityQueue<Long> minimumHashValues = new PriorityQueue<>(Collections.reverseOrder());
-    private final HashSet<Long> hashValues = new HashSet<>();
+    private final TreeSet<Long> kMinimumHashValues = new TreeSet<>();
     private final int kMinimumValues;
     private final PairwiseHash hashFunction = new PairwiseHash();
 
     public PairwiseKMV(int kMinimumValues) {
-        this.kMinimumValues = kMinimumValues + 1;
+        this.kMinimumValues = kMinimumValues;
     }
 
     public void update(long item) {
 
         long hashValue = hashFunction.hash(item);
 
-        if (hashValues.contains(hashValue)) {
+        if (kMinimumHashValues.contains(hashValue)) {
             return;
         }
 
-        if (minimumHashValues.size() < kMinimumValues) {
-            minimumHashValues.add(hashValue);
-            hashValues.add(hashValue);
+        if (kMinimumHashValues.size() < kMinimumValues) {
+            kMinimumHashValues.add(hashValue);
             return;
         }
 
-        long biggestK = minimumHashValues.peek();
+        long biggestK = kMinimumHashValues.last();
         if (biggestK > hashValue) {
-            minimumHashValues.poll();
-            hashValues.remove(biggestK);
-
-            minimumHashValues.add(hashValue);
-            hashValues.add(hashValue);
+            kMinimumHashValues.remove(biggestK);
+            kMinimumHashValues.add(hashValue);
         }
     }
 
     public long query() {
-        if (minimumHashValues.size() < kMinimumValues) {
-            return minimumHashValues.size();
+        if (kMinimumHashValues.size() < kMinimumValues) {
+            return kMinimumHashValues.size();
         }
 
-        double area_on_line = (double) hashFunction.getPrime() / minimumHashValues.peek();
+        double area_on_line = (double) hashFunction.getPrime() / kMinimumHashValues.last();
         return Math.round((kMinimumValues - 1) * area_on_line);
     }
 
     public int getBytesUsed() {
-        return hashValues.size() * 16;
+        return kMinimumHashValues.size() * 8;
     }
 }

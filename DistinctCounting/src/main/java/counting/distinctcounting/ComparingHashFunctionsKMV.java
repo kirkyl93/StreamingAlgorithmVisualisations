@@ -20,23 +20,23 @@ public class ComparingHashFunctionsKMV extends Application {
 
         // Set the number of items we will store in our priority queue (the Kth value will be the item at the top
         // of the heap). The bigger this value, the more accurate our algorithm should be.
-        final int K_VALUE = 2;
+        final int K_VALUE = 10000;
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average
         // performance of our algorithm.
-        final int NUMBER_OF_KMVS = 1;
+        final int NUMBER_OF_KMVS = 10;
 
         // Set the number of distinct items we will count to until the algorithm terminates.
         final long DISTINCT_COUNT = 1200000000000L;
 
         // Set the max number that our random number generator can generate. In order for the algorithm to work, this
         // has to be set higher than the DISTINCT_COUNT number.
-        final long UPPER_LIMIT_NUM_TO_ADD = 100000000000000L;
+        final long UPPER_LIMIT_NUM_TO_ADD = 100000000L;
 
         // Set the number of updates made to our KMVs before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values.
-        final int UPDATES_PER_FRAME = 100000;
+        final int UPDATES_PER_FRAME = 10000;
 
 
         // Prepare line chart
@@ -100,7 +100,7 @@ public class ComparingHashFunctionsKMV extends Application {
                     long pairwiseEstimate = pairwiseKMV.query();
                     long fourwiseEstimate = fourwiseKMV.query();
                     long distinctCount = trueDistinctCount.query();
-                    if (distinctCount > 0) {
+                    if (distinctCount > 0 && distinctCount - fourwiseEstimate != 0) {
                         pairwiseErrorPercentage += (double) Math.abs(distinctCount - pairwiseEstimate) / distinctCount * 100;
                         fourwiseErrorPercentage += (double) Math.abs(distinctCount - fourwiseEstimate) / distinctCount * 100;
                     }
