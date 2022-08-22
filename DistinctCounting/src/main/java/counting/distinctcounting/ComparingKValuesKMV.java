@@ -66,6 +66,7 @@ public class ComparingKValuesKMV extends Application {
         // Set up basic true distinct count
         BasicDistinctCountingHash trueDistinctCount = new BasicDistinctCountingHash();
 
+
         new AnimationTimer() {
             private long currentDistinctCount = 0;
 

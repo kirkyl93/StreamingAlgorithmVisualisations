@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class PairwiseHash {
 
-    private final long p = 3727459247L;
+    private final long p = 887213367811L;
     private final long a;
     private final long b;
 

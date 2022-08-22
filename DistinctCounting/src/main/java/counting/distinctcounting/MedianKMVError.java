@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -20,18 +21,18 @@ public class MedianKMVError extends Application {
         Random rand = new Random();
 
         // Add the k value to test
-        final int K_VALUE = 5000;
+        final int K_VALUE = 50000;
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average
         // performance of our algorithm.
         final int NUMBER_OF_KMVS = 1000;
 
         // Set the number of distinct items we will count to until the algorithm terminates.
-        final long DISTINCT_COUNT = 120000000;
+        final long DISTINCT_COUNT = 10000000;
 
         // Set the max number that our random number generator can generate. In order for the algorithm to work, this
         // has to be set higher than the DISTINCT_COUNT number.
-        final long UPPER_LIMIT_NUM_TO_ADD = 150000000;
+        final long UPPER_LIMIT_NUM_TO_ADD = 15000000000L;
 
         // Set the number of updates made to our KMVs before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
@@ -41,10 +42,13 @@ public class MedianKMVError extends Application {
         // Prepare line chart
         stage.setTitle("Median and 90th percentile line - KMV");
         final NumberAxis distinctItems = new NumberAxis();
+        distinctItems.tickLabelFontProperty().set(Font.font(20));
         final NumberAxis algorithmEstimate = new NumberAxis();
+        algorithmEstimate.tickLabelFontProperty().set(Font.font(20));
         distinctItems.setLabel("Distinct Items");
         algorithmEstimate.setLabel("Algorithm percentage error");
         final LineChart<Number, Number> LINE_CHART = new LineChart<>(distinctItems, algorithmEstimate);
+        LINE_CHART.setStyle("-fx-font-size: " + 24 + "px;");
         LINE_CHART.setTitle("Median and 90th percentile line - KMV");
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);

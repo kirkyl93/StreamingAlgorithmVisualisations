@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
@@ -16,13 +17,13 @@ public class MedianMorrisCounterError extends Application {
     public void start(Stage stage) {
 
         // Set the b value for the Morris Counters
-        final double B_VALUE = 1.001;
+        final double B_VALUE = 1.0001;
 
         // Set the number of counters from which we will select the median and 90th percentile run
         final int NUMBER_OF_COUNTERS = 10000;
 
         // Set the value to which our counter counts to
-        final long COUNT_TO_VALUE = 100000000;
+        final long COUNT_TO_VALUE = 10000000;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
@@ -33,10 +34,13 @@ public class MedianMorrisCounterError extends Application {
         // Prepare percentage error line chart
         stage.setTitle("Median and 90th percentile run " + B_VALUE);
         final NumberAxis trueCount = new NumberAxis();
+        trueCount.tickLabelFontProperty().set(Font.font(20));
         final NumberAxis percentageError = new NumberAxis();
+        percentageError.tickLabelFontProperty().set(Font.font(20));
         trueCount.setLabel("True count");
         percentageError.setLabel("Percentage error");
         final LineChart<Number, Number> LINE_CHART = new LineChart<>(trueCount, percentageError);
+        LINE_CHART.setStyle("-fx-font-size: " + 24 + "px;");
         LINE_CHART.setTitle("Median and 90th percentile run " + B_VALUE);
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);

@@ -24,10 +24,10 @@ public class MorrisAndBasicApproximateComparison extends Application {
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
         // and Basic Approximate Counters and take their average.
-        final int NUMBER_OF_COUNTERS = 10;
+        final int NUMBER_OF_COUNTERS = 1000;
 
         // Set the update value for the Basic Approximate Counter
-        final int APPROXIMATE_COUNT_VALUE = 10000;
+        final int APPROXIMATE_COUNT_VALUE = 1000;
 
         // Set the value to which our counter counts to
         final long COUNT_TO_VALUE = 10000000;

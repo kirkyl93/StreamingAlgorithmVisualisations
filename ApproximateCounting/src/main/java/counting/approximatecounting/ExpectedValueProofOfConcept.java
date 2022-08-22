@@ -22,21 +22,20 @@ public class ExpectedValueProofOfConcept extends Application {
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
         // Approximate Counters simultaneously and take their average.
-        final int NUMBER_OF_COUNTERS = 10000;
+        final int NUMBER_OF_COUNTERS = 50000;
 
         // Set the value to which our counters count to.
-        final long COUNT_TO_VALUE = 10000000;
+        final long COUNT_TO_VALUE = 1000000;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation.
-        final int UPDATES_PER_FRAME = 1000;
+        final int UPDATES_PER_FRAME = 100;
 
-        // Set the b value in Morris counter (see MorrisCounter class). In Morris' original formulation,
-        // this is set to 2.
-        final double MORRIS_B_VALUE = 2;
+        // Set the b value in Morris counter (see MorrisCounter class)
+        final double MORRIS_B_VALUE = 1.01;
 
-        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 10000;
+        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 1000;
 
-        // Prepare line chart
+        // Prepare line charts
         stage.setTitle("Expected value proof of concept");
         final NumberAxis xAXIS = new NumberAxis();
         xAXIS.tickLabelFontProperty().set(Font.font(20));
@@ -50,6 +49,20 @@ public class ExpectedValueProofOfConcept extends Application {
         LINE_CHART.setAnimated(false);
         LINE_CHART.setCreateSymbols(false);
 
+        Stage stage2 = new Stage();
+        stage2.setTitle("Percentage Error of average of Counter queries");
+        final NumberAxis trueCount = new NumberAxis();
+        trueCount.tickLabelFontProperty().set(Font.font(20));
+        final NumberAxis percentageError = new NumberAxis();
+        percentageError.tickLabelFontProperty().set(Font.font(20));
+        trueCount.setLabel("True count");
+        percentageError.setLabel("Percentage error");
+        final LineChart<Number, Number> LINE_CHART_PERCENTAGE_ERROR = new LineChart<>(trueCount, percentageError);
+        LINE_CHART_PERCENTAGE_ERROR.setStyle("-fx-font-size: " + 24 + "px;");
+        LINE_CHART_PERCENTAGE_ERROR.setTitle("Percentage error of average of counter queries");
+        LINE_CHART_PERCENTAGE_ERROR.setAnimated(false);
+        LINE_CHART_PERCENTAGE_ERROR.setCreateSymbols(false);
+
 
         // Prepare series data on line chart for our counters
         XYChart.Series<Number, Number> basicCounterLine = new XYChart.Series<>();
@@ -58,9 +71,16 @@ public class ExpectedValueProofOfConcept extends Application {
         basicApproximateCounterLine.setName("Approximate Counter");
         XYChart.Series<Number, Number> morrisCounterLine = new XYChart.Series<>();
         morrisCounterLine.setName("Morris Counter");
-        LINE_CHART.getData().add(basicCounterLine);
         LINE_CHART.getData().add(basicApproximateCounterLine);
         LINE_CHART.getData().add(morrisCounterLine);
+        LINE_CHART.getData().add(basicCounterLine);
+
+        XYChart.Series<Number, Number> basicApproximateCounterError = new XYChart.Series<>();
+        basicApproximateCounterError.setName("Basic Approximate Counter error");
+        XYChart.Series<Number, Number> morrisCounterError = new XYChart.Series<>();
+        morrisCounterError.setName("Morris Counter error");
+        LINE_CHART_PERCENTAGE_ERROR.getData().add(basicApproximateCounterError);
+        LINE_CHART_PERCENTAGE_ERROR.getData().add(morrisCounterError);
 
         // Create our counters
         ArrayList<BasicApproximateCounter> basicApproximateCounters = new ArrayList<>();
@@ -96,15 +116,23 @@ public class ExpectedValueProofOfConcept extends Application {
                 }
 
 
-                // Find average for our counters
+                // Find average and percentage error of our counters
+                double basicApproximatePercentageError = 0;
+                double morrisCounterPercentageError = 0;
                 double basicApproximateAverage = (double) basicApproximateSum / NUMBER_OF_COUNTERS;
                 double morrisAverage = (double) morrisSum / NUMBER_OF_COUNTERS;
-
+                if (count > 0) {
+                    basicApproximatePercentageError = (basicApproximateAverage - count) / count * 100;
+                    morrisCounterPercentageError = (morrisAverage - count) / count * 100;
+                }
 
                 // Add to line chart and visualise
                 basicCounterLine.getData().add(new XYChart.Data<>(count, count));
                 basicApproximateCounterLine.getData().add(new XYChart.Data<>(count, basicApproximateAverage));
                 morrisCounterLine.getData().add(new XYChart.Data<>(count, morrisAverage));
+
+                basicApproximateCounterError.getData().add(new XYChart.Data<>(count, basicApproximatePercentageError));
+                morrisCounterError.getData().add(new XYChart.Data<>(count, morrisCounterPercentageError));
 
                 count += UPDATES_PER_FRAME;
             }
@@ -114,6 +142,10 @@ public class ExpectedValueProofOfConcept extends Application {
         Scene scene = new Scene(LINE_CHART, 800, 600);
         stage.setScene(scene);
         stage.show();
+
+        Scene scene2 = new Scene(LINE_CHART_PERCENTAGE_ERROR, 800, 600);
+        stage2.setScene(scene2);
+        stage2.show();
     }
 
 

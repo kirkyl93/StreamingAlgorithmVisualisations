@@ -16,7 +16,7 @@ public class ComparingMorrisCounterBValues extends Application {
     public void start(Stage stage) {
 
         // Set the b values for the lines
-        final double[] B_VALUES = {1.001};
+        final double[] B_VALUES = {1.0001};
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
         // simultaneously for each b_value and take their average.

@@ -8,7 +8,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
@@ -40,7 +39,7 @@ public class CountMinSketchesComparison extends Application {
 
         CountMinSketch cmOriginal = new CountMinSketchOriginal(NUMBER_OF_HASH_FUNCTIONS, NUMBER_OF_SLOTS_PER_ROW);
         CountMinSketch cmConservative = new CountMinSketchConservative(NUMBER_OF_HASH_FUNCTIONS, NUMBER_OF_SLOTS_PER_ROW);
-        CountMinSketch cmMean = new CountMinMeanSketch(NUMBER_OF_HASH_FUNCTIONS, NUMBER_OF_SLOTS_PER_ROW);
+        CountMinSketch cmMean = new CountMeanMinSketch(NUMBER_OF_HASH_FUNCTIONS, NUMBER_OF_SLOTS_PER_ROW);
 
         stage.setTitle("Comparing Count Min Sketches Performance");
         final NumberAxis distinctItems = new NumberAxis();

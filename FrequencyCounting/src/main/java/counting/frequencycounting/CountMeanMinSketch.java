@@ -2,11 +2,11 @@ package counting.frequencycounting;
 
 import java.util.Arrays;
 
-public class CountMinMeanSketch extends CountMinSketch {
+public class CountMeanMinSketch extends CountMinSketch {
 
     long totalWeight = 0;
 
-    public CountMinMeanSketch(int d, int t) {
+    public CountMeanMinSketch(int d, int t) {
         super(d, t);
     }
 
