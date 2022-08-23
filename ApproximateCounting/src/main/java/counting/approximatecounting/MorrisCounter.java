@@ -32,7 +32,7 @@ public class MorrisCounter implements Counter {
         }
 
         long mostUpdates = Math.max(timesUpdated, mc.timesUpdated);
-        long leastUpdates = Math.max(timesUpdated, mc.timesUpdated);
+        long leastUpdates = Math.min(timesUpdated, mc.timesUpdated);
 
         for (long i = 0; i < leastUpdates; i++) {
             double y = rand.nextDouble();
