@@ -12,8 +12,14 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 
-// This is a proof of concept that the expected values of the Morris Counter and approximate counters equal the true
-// count. The higher the number of counters entered, the closer the lines should run to the true count.
+/** This class is a proof of concept that the expected values of the Morris Counter and approximate counters equal the
+ * true count. The higher the number of counters entered, the closer the lines should run to the true count. The user can
+ * edit input values to change the data being visualised. This class creates 2 charts:
+ * 1) A dynamic visualisation of the percentage errors of the average query results of the Morris Counter and
+ * BasicApproximateCounter
+ * 2) A dynamic visualisation of the average of the algorithm estimates for the MorrisCounter and BasicApproximateCounters
+ * plotted alongside the true count
+ */
 
 
 public class ExpectedValueProofOfConcept extends Application {
@@ -33,7 +39,7 @@ public class ExpectedValueProofOfConcept extends Application {
         // Set the b value in Morris counter (see MorrisCounter class)
         final double MORRIS_B_VALUE = 1.01;
 
-        final double APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE = 1000;
+        final double APPROXIMATE_COUNT_B_VALUE = 1000;
 
         // Prepare line charts
         stage.setTitle("Expected value proof of concept");
@@ -86,7 +92,7 @@ public class ExpectedValueProofOfConcept extends Application {
         ArrayList<BasicApproximateCounter> basicApproximateCounters = new ArrayList<>();
         ArrayList<MorrisCounter> morrisCounters = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
-            basicApproximateCounters.add(new BasicApproximateCounter(APPROXIMATE_COUNT_EXPECTED_ITERATIONS_PER_UPDATE));
+            basicApproximateCounters.add(new BasicApproximateCounter(APPROXIMATE_COUNT_B_VALUE));
             morrisCounters.add(new MorrisCounter(MORRIS_B_VALUE));
         }
 

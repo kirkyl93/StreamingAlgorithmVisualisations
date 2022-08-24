@@ -8,8 +8,12 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.util.Arrays;
+
+/** This class takes a single MorrisCounter b value and runs d simultaneous instances, where d is user-defined.
+ * It then records the median and 90th percentile errors of the counters. This class creates a single chart:
+ * 1) A dynamic visualisation of the median and 90th percentile errors as the true count increases
+ */
 
 public class MedianMorrisCounterError extends Application {
 
@@ -17,7 +21,7 @@ public class MedianMorrisCounterError extends Application {
     public void start(Stage stage) {
 
         // Set the b value for the Morris Counters
-        final double B_VALUE = 1.0001;
+        final double B_VALUE = 1.5;
 
         // Set the number of counters from which we will select the median and 90th percentile run
         final int NUMBER_OF_COUNTERS = 10000;
@@ -28,7 +32,7 @@ public class MedianMorrisCounterError extends Application {
         // Set the number of updates made to our counters before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values.
-        final int UPDATES_PER_FRAME = 1000;
+        final int UPDATES_PER_FRAME = 10;
 
 
         // Prepare percentage error line chart

@@ -1,6 +1,7 @@
 package counting.approximatecounting;
 
-// Every counter should be expected to implement these methods.
+/** Every counter should be expected to implement these methods.
+*/
 
 public interface Counter {
 

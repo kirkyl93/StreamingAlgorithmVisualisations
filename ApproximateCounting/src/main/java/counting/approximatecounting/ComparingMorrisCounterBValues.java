@@ -7,8 +7,15 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
+
+/** This class creates a visualisation of Morris Counters with different b values. The user can edit input values to
+ * change the data being visualised. This class creates 3 charts:
+ * 1) A dynamic visualisation of the counts each b value has received (averaged if NUMBER_OF_COUNTERS > 1)
+ * 2) A dynamic visualisation of the percentage error of each b value (averaged if NUMBER_OF_COUNTERS > 1)
+ * 3) A dynamic visualisation of the algorithm estimate for each b value (averaged if NUMBER_OF_COUNTERS > 1) plotted
+ * alongside the true count
+ */
 
 public class ComparingMorrisCounterBValues extends Application {
 
@@ -16,19 +23,21 @@ public class ComparingMorrisCounterBValues extends Application {
     public void start(Stage stage) {
 
         // Set the b values for the lines
-        final double[] B_VALUES = {1.0001};
+        final double[] B_VALUES = {1.00001, 1.0001, 1.001};
 
-        // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
-        // simultaneously for each b_value and take their average.
+        /* Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
+         * simultaneously for each b_value and take their average.
+         */
         final int NUMBER_OF_COUNTERS = 1;
 
         // Set the value to which our counters count to.
         final long COUNT_TO_VALUE = 5000000000L;
 
-        // Set the number of updates made to our counters before refreshing the graph visualisation. The smaller this is,
-        // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
-        // large count values.
-        final int UPDATES_PER_FRAME = 1000000;
+        /* Set the number of updates made to our counters before refreshing the graph visualisation. The smaller this is,
+         * the more detail that can be seen in the results. However, it will take the program much longer to arrive at
+         * large count values.
+         */
+        final int UPDATES_PER_FRAME = 1;
 
         // Prepare estimate line chart
         stage.setTitle("Comparing B value estimates in Morris Counter");
@@ -66,8 +75,8 @@ public class ComparingMorrisCounterBValues extends Application {
         LINE_CHART_PERCENTAGE_ERROR.setCreateSymbols(false);
 
         // Prepare storage for all the lines we are going to store and update on our charts
-        ArrayList<XYChart.Series<Number,Number>> morrisLines = new ArrayList<>();
-        ArrayList<XYChart.Series<Number, Number>> updateLines = new ArrayList<>();
+        ArrayList<XYChart.Series<Number,Number>> morrisEstimateLines = new ArrayList<>();
+        ArrayList<XYChart.Series<Number, Number>> morrisUpdateLines = new ArrayList<>();
         ArrayList<XYChart.Series<Number, Number>> percentageErrorLines = new ArrayList<>();
         ArrayList<ArrayList<MorrisCounter>> morrisCounters = new ArrayList<>(NUMBER_OF_COUNTERS);
 
@@ -84,8 +93,8 @@ public class ComparingMorrisCounterBValues extends Application {
             percentageErrorLine.setName(Double.toString(B_VALUES[i]));
 
             // Add newly created lines to our previously prepared arraylists and charts
-            morrisLines.add(morrisLine);
-            updateLines.add(updatesLine);
+            morrisEstimateLines.add(morrisLine);
+            morrisUpdateLines.add(updatesLine);
             percentageErrorLines.add(percentageErrorLine);
 
             LINE_CHART_ESTIMATES.getData().add(morrisLine);
@@ -130,7 +139,7 @@ public class ComparingMorrisCounterBValues extends Application {
                     for (int j = 0; j < NUMBER_OF_COUNTERS; j++) {
                         MorrisCounter mc = mcs.get(j);
                         long mcCount = mc.query();
-                        long updateCount = mc.getTimesUpdated();
+                        long updateCount = mc.getCount();
                         double percentageError = 0;
                         if (count > 0) {
                             percentageError = (double) Math.abs((mcCount - count)) / count * 100;
@@ -153,8 +162,8 @@ public class ComparingMorrisCounterBValues extends Application {
                     double averageCount = (double) morrisEstimates.get(i) / NUMBER_OF_COUNTERS;
                     double averageUpdates = (double) updates.get(i) / NUMBER_OF_COUNTERS;
                     double percentageError = percentageErrors.get(i) / NUMBER_OF_COUNTERS;
-                    morrisLines.get(i).getData().add(new XYChart.Data<>(count, averageCount));
-                    updateLines.get(i).getData().add(new XYChart.Data<>(count, averageUpdates));
+                    morrisEstimateLines.get(i).getData().add(new XYChart.Data<>(count, averageCount));
+                    morrisUpdateLines.get(i).getData().add(new XYChart.Data<>(count, averageUpdates));
                     percentageErrorLines.get(i).getData().add(new XYChart.Data<>(count, percentageError));
                 }
 

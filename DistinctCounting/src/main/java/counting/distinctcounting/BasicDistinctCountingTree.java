@@ -1,7 +1,10 @@
 package counting.distinctcounting;
 
-import java.util.TreeMap;
 import java.util.TreeSet;
+
+/** A simple implementation of a distinct counter using Java's in-built implementation of a balanced binary search tree.
+ * It uses a red-black tree under the hood to guarantee O(log(n)) updates, deletions and queries.
+ */
 
 public class BasicDistinctCountingTree {
 

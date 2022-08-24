@@ -22,11 +22,11 @@ public class CountMinSketchesComparison extends Application {
 
         Random rand = new Random();
 
-        final int NUMBER_OF_HASH_FUNCTIONS = 8;
+        final int NUMBER_OF_HASH_FUNCTIONS = 3;
 
-        final int NUMBER_OF_SLOTS_PER_ROW = 10000;
+        final int NUMBER_OF_SLOTS_PER_ROW = 7;
 
-        final long UNIQUE_ITEMS_TO_ADD = 1000000000;
+        final long UNIQUE_ITEMS_TO_ADD = 100000;
 
         final long MAX_ITEM_TO_ADD = 100000000;
 
@@ -34,7 +34,7 @@ public class CountMinSketchesComparison extends Application {
 
         final int MAX_WEIGHT_TO_ADD = 7000;
 
-        final int UPDATES_PER_FRAME = 1000000;
+        final int UPDATES_PER_FRAME = 1000;
 
 
         CountMinSketch cmOriginal = new CountMinSketchOriginal(NUMBER_OF_HASH_FUNCTIONS, NUMBER_OF_SLOTS_PER_ROW);

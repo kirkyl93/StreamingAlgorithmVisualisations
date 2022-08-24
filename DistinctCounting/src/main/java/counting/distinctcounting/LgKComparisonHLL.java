@@ -8,9 +8,15 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import org.apache.datasketches.hll.HllSketch;
-
 import java.util.ArrayList;
 import java.util.Random;
+
+/** This class creates a visualisation of HLLs with different lgK values. The user can edit input values to change the
+ * data being visualised. This class creates 3 charts:
+ * 1) A dynamic visualisation of the space usage of each of the HLLs
+ * 2) A dynamic visualisation of the percentage errors of each of the HLLs
+ * 3) A dynamic visualisation of the estimates of each of the HLLs plotted against the true distinct count
+ */
 
 public class LgKComparisonHLL extends Application {
 
@@ -32,16 +38,16 @@ public class LgKComparisonHLL extends Application {
         // Set the number of updates made to our KMVs before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values
-        final int UPDATES_PER_FRAME = 100000;
+        final int UPDATES_PER_FRAME = 100;
 
         // Prepare line charts
-        stage.setTitle("Comparing accuracy of lgK values - HLL");
+        stage.setTitle("Comparing percentage errors of lgK values - HLL");
         final NumberAxis distinctItems = new NumberAxis();
-        final NumberAxis algorithmEstimate = new NumberAxis();
+        final NumberAxis percentageError = new NumberAxis();
         distinctItems.setLabel("Distinct Items");
-        algorithmEstimate.setLabel("Algorithm percentage error");
-        final LineChart<Number, Number> LINE_CHART_ACCURACY = new LineChart<>(distinctItems, algorithmEstimate);
-        LINE_CHART_ACCURACY.setTitle("Comparing accuracy of lgK values - HLL");
+        percentageError.setLabel("Algorithm percentage error");
+        final LineChart<Number, Number> LINE_CHART_ACCURACY = new LineChart<>(distinctItems, percentageError);
+        LINE_CHART_ACCURACY.setTitle("Comparing percentage errors of lgK values - HLL");
         LINE_CHART_ACCURACY.setAnimated(false);
         LINE_CHART_ACCURACY.setCreateSymbols(false);
 
@@ -56,9 +62,21 @@ public class LgKComparisonHLL extends Application {
         LINE_CHART_SPACE.setAnimated(false);
         LINE_CHART_SPACE.setCreateSymbols(false);
 
+        Stage thirdStage = new Stage();
+        thirdStage.setTitle("Comparing estimates of lgK values");
+        final NumberAxis distinctItems3 = new NumberAxis();
+        final NumberAxis algorithmEstimate = new NumberAxis();
+        distinctItems3.setLabel("Distinct Items");
+        algorithmEstimate.setLabel("Algorithm estimate");
+        final LineChart<Number, Number> LINE_CHART_ESTIMATE = new LineChart<>(distinctItems3, algorithmEstimate);
+        LINE_CHART_ESTIMATE.setTitle("Comparing estimates of lgK values");
+        LINE_CHART_ESTIMATE.setAnimated(false);
+        LINE_CHART_ESTIMATE.setCreateSymbols(false);
+
         // Create array lists to store our lines and HLL sketches
-        ArrayList<XYChart.Series<Number, Number>> lgKAccuracyLines = new ArrayList<>();
+        ArrayList<XYChart.Series<Number, Number>> lgKPercentageErrorLines = new ArrayList<>();
         ArrayList<XYChart.Series<Number, Number>> lgKSpaceLines = new ArrayList<>();
+        ArrayList<XYChart.Series<Number, Number>> lgKEstimateLines = new ArrayList<>();
 
         ArrayList<HllSketch> hllSketches = new ArrayList<>();
 
@@ -67,15 +85,24 @@ public class LgKComparisonHLL extends Application {
             XYChart.Series<Number, Number> accuracyLine = new XYChart.Series<>();
             accuracyLine.setName("lgK " + lgKValues[i]);
             LINE_CHART_ACCURACY.getData().add(accuracyLine);
-            lgKAccuracyLines.add(accuracyLine);
+            lgKPercentageErrorLines.add(accuracyLine);
 
             XYChart.Series<Number, Number> spaceLine = new XYChart.Series<>();
             spaceLine.setName("lgK " + lgKValues[i]);
             LINE_CHART_SPACE.getData().add(spaceLine);
             lgKSpaceLines.add(spaceLine);
 
+            XYChart.Series<Number, Number> estimateLine = new XYChart.Series<>();
+            estimateLine.setName("lgK " + lgKValues[i]);
+            LINE_CHART_ESTIMATE.getData().add(estimateLine);
+            lgKEstimateLines.add(estimateLine);
+
             hllSketches.add(new HllSketch(lgKValues[i]));
         }
+
+        XYChart.Series<Number, Number> trueCountLine = new XYChart.Series<>();
+        trueCountLine.setName("True count");
+        LINE_CHART_ESTIMATE.getData().add(trueCountLine);
 
         // Set up basic true distinct count
         BasicDistinctCountingHash trueDistinctCount = new BasicDistinctCountingHash();
@@ -93,12 +120,16 @@ public class LgKComparisonHLL extends Application {
 
                 // Update our line charts
                 for (int i = 0; i < lgKValues.length; i++) {
-                    lgKAccuracyLines.get(i).getData().add(new XYChart.Data<>(currentCount,
+                    lgKPercentageErrorLines.get(i).getData().add(new XYChart.Data<>(currentCount,
                             (currentCount == 0) ? 0 : Math.abs(hllSketches.get(i).getEstimate() - currentCount) / currentCount * 100));
 
                     lgKSpaceLines.get(i).getData().add(new XYChart.Data<>(trueDistinctCount.query(),
                             hllSketches.get(i).getCompactSerializationBytes()));
+
+                    lgKEstimateLines.get(i).getData().add(new XYChart.Data<>(trueDistinctCount.query(), hllSketches.get(i).getEstimate()));
                 }
+
+                trueCountLine.getData().add(new XYChart.Data<>(trueDistinctCount.query(), trueDistinctCount.query()));
 
                 // Update our sketches with randomly generated numbers
                 for (int i = 0; i < UPDATES_PER_FRAME; i++) {
@@ -120,6 +151,10 @@ public class LgKComparisonHLL extends Application {
         Scene scene2 = new Scene(LINE_CHART_SPACE, 800, 600);
         secondStage.setScene(scene2);
         secondStage.show();
+
+        Scene scene3 = new Scene(LINE_CHART_ESTIMATE, 800, 600);
+        thirdStage.setScene(scene3);
+        thirdStage.show();
     }
 
     public static void main(String[] args) {

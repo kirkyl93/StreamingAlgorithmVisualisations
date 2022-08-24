@@ -9,25 +9,30 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 public class MorrisAndBasicApproximateComparison extends Application {
 
-
+    /** This class compares the performance of a MorrisCounter with a BasicApproximateCounter. It is helpful in
+     * showing the poor performance of the BasicApproximateCounter for small values of n, the true distinct count
+     * (especially for large values of b), and also the linear growth of the BasicApproximateCounter alongside the
+     * logarithmic growth of the MorrisCounter. This class creates two charts:
+     * 1) A dynamic visualisation of the percentage error of the MorrisCounter and BasicApproximateCounter (averaged
+     * if NUMBER_OF_COUNTERS > 1)
+     * 2) A dynamic visualisation of the counts of the MorrisCounter and BasicApproximateCounter (averaged if
+     * NUMBER_OF_COUNTERS > 1)
+     */
 
     @Override
     public void start(Stage stage) {
 
         // Set the b value for the Morris Counters
-        final double B_VALUE = 1.01;
+        final double MORRIS_B_VALUE = 1.01;
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
         // and Basic Approximate Counters and take their average.
         final int NUMBER_OF_COUNTERS = 1000;
 
         // Set the update value for the Basic Approximate Counter
-        final int APPROXIMATE_COUNT_VALUE = 1000;
+        final int APPROXIMATE_COUNT_B_VALUE = 1000;
 
         // Set the value to which our counter counts to
         final long COUNT_TO_VALUE = 10000000;
@@ -89,8 +94,8 @@ public class MorrisAndBasicApproximateComparison extends Application {
         BasicApproximateCounter[] basicApproximateCounters = new BasicApproximateCounter[NUMBER_OF_COUNTERS];
 
         for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
-            morrisCounters[i] = new MorrisCounter(B_VALUE);
-            basicApproximateCounters[i] = new BasicApproximateCounter(APPROXIMATE_COUNT_VALUE);
+            morrisCounters[i] = new MorrisCounter(MORRIS_B_VALUE);
+            basicApproximateCounters[i] = new BasicApproximateCounter(APPROXIMATE_COUNT_B_VALUE);
         }
 
         new AnimationTimer() {
@@ -114,11 +119,11 @@ public class MorrisAndBasicApproximateComparison extends Application {
                 for (int i = 0; i < NUMBER_OF_COUNTERS; i++) {
                     MorrisCounter mc = morrisCounters[i];
                     long mcCount = mc.query();
-                    long mcUpdateCount = mc.getTimesUpdated();
+                    long mcUpdateCount = mc.getCount();
 
                     BasicApproximateCounter bac = basicApproximateCounters[i];
                     long bacCount = bac.query();
-                    long bacUpdateCount = bac.getTimesUpdated();
+                    long bacUpdateCount = bac.getCount();
 
                     double morrisPercentageError = 0;
                     double basicApproximatePercentageError = 0;
