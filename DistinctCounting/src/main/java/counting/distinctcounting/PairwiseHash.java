@@ -2,7 +2,8 @@ package counting.distinctcounting;
 
 import java.util.Random;
 
-/** A class that chooses a hash function from a family of pairwise independent functions
+/** A class that chooses a hash function from a family of pairwise independent functions. It inherits from a base
+ * hash function class
  *
  */
 

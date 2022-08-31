@@ -2,26 +2,17 @@ package counting.frequencycounting;
 
 import java.util.Random;
 
-public class PairwiseHash {
+/** A class that chooses a hash function from a family of pairwise independent functions. It inherits from a base
+ * hash function class
+ *
+ */
 
+public class PairwiseHash extends Hash {
 
-    private final long p = 3727459247L;
-    private final long a;
-    private final long b;
-
-    public PairwiseHash() {
-        Random rand = new Random();
-        this.a = rand.nextLong(p);
-        this.b = rand.nextLong(p);
-    }
-
-    public long hash(long x) {
-
-        return Math.abs(a * x + b) % p;
-    }
-
-    public long getPrime() {
-        return p;
+    @Override
+    // The hash function is in the form ax + b
+    public long hashFunction(long x) {
+        return Math.abs(super.getA() * x + super.getB()) % super.getPrime();
     }
 }
 

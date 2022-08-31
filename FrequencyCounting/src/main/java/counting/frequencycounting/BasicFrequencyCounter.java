@@ -2,6 +2,10 @@ package counting.frequencycounting;
 
 import java.util.HashMap;
 
+/** A basic frequency counter using an in-built Java Hash Map
+ *
+ */
+
 public class BasicFrequencyCounter {
 
     final HashMap<Long, Long> items = new HashMap<>();

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
+/** An abstract class for the KMV algorithm. As the algorithm can be run using different hash functions, this class
+ * is flexible- it can be used for KMVs with any hash function
+ *
+ */
+
 public abstract class KMV {
 
     private final TreeSet<Long> kMinimumHashValues;

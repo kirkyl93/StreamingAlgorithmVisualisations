@@ -27,11 +27,11 @@ public class ComparingHashFunctionsKMV extends Application {
 
         // Set the number of items we will store in our priority queue (the Kth value will be the item at the top
         // of the heap). The bigger this value, the more accurate our algorithm should be.
-        final int K_VALUE = 10;
+        final int K_VALUE = 1000;
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average
         // performance of our algorithm.
-        final int NUMBER_OF_KMVS = 1;
+        final int NUMBER_OF_KMVS = 10000;
 
         // Set the number of distinct items we will count to until the algorithm terminates.
         final long DISTINCT_COUNT = 1200000000000L;

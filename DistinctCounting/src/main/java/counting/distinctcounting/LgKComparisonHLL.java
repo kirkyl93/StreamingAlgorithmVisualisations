@@ -11,11 +11,15 @@ import org.apache.datasketches.hll.HllSketch;
 import java.util.ArrayList;
 import java.util.Random;
 
-/** This class creates a visualisation of HLLs with different lgK values. The user can edit input values to change the
- * data being visualised. This class creates 3 charts:
+/** This class creates a visualisation of Apache DataSketches' HLLs with different lgK values. The user can edit input
+ *  values to change the data being visualised. This class creates 3 charts:
  * 1) A dynamic visualisation of the space usage of each of the HLLs
  * 2) A dynamic visualisation of the percentage errors of each of the HLLs
  * 3) A dynamic visualisation of the estimates of each of the HLLs plotted against the true distinct count
+ *
+ * Unfortunately, because of implementation details in the DataSketches build, only single instances of the HLLs can
+ * be run. This means there could be significant variances in the performance of the algorithms each time the
+ * program is run
  */
 
 public class LgKComparisonHLL extends Application {
@@ -25,7 +29,7 @@ public class LgKComparisonHLL extends Application {
 
         Random rand = new Random();
 
-        // Set the LgK values for our HLL sketches
+        // Set the LgK values for our HLL sketches (between 4 and 21)
         final int[] lgKValues = {4, 6, 8};
 
         // Set the number of distinct items we will count to until the algorithm terminates.

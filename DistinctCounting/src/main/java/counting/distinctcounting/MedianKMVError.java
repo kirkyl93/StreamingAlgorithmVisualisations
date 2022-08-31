@@ -8,10 +8,14 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+
+/** This class takes a single KMV k value and runs d simultaneous instances, where d is user-defined.
+ * It then records the median and 90th percentile errors of the algorithm. This class creates a single chart:
+ * 1) A dynamic visualisation of the median and 90th percentile errors as the true distinct count increases
+ */
 
 public class MedianKMVError extends Application {
 
@@ -21,7 +25,7 @@ public class MedianKMVError extends Application {
         Random rand = new Random();
 
         // Add the k value to test
-        final int K_VALUE = 50000;
+        final int K_VALUE = 1000000;
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average
         // performance of our algorithm.

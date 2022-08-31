@@ -28,7 +28,7 @@ public class ExpectedValueProofOfConcept extends Application {
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris and
         // Approximate Counters simultaneously and take their average.
-        final int NUMBER_OF_COUNTERS = 50000;
+        final int NUMBER_OF_COUNTERS = 1;
 
         // Set the value to which our counters count to.
         final long COUNT_TO_VALUE = 1000000;
@@ -37,7 +37,7 @@ public class ExpectedValueProofOfConcept extends Application {
         final int UPDATES_PER_FRAME = 100;
 
         // Set the b value in Morris counter (see MorrisCounter class)
-        final double MORRIS_B_VALUE = 1.01;
+        final double MORRIS_B_VALUE = 2;
 
         final double APPROXIMATE_COUNT_B_VALUE = 1000;
 

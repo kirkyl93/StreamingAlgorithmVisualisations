@@ -8,9 +8,15 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.Random;
+
+/** This class is a proof of concept to show that the expected value of the KMV equals the true count. The higher the
+ * number of counters entered, and the bigger the k value, the closer the lines should run to the true distinct count.
+ * This class creates 2 charts:
+ * 1) A dynamic visualisation of the percentage errors of the average query results of the KMVs
+ * 2) A dynamic visualisation of the average of the algorithm estimates for the KMVs plotted against the true count
+ */
 
 public class ExpectedValueProofOfConcept extends Application {
 
@@ -20,14 +26,14 @@ public class ExpectedValueProofOfConcept extends Application {
         Random rand = new Random();
 
         // Set the k Value of the KMVs
-        final int K_VALUE = 10;
+        final int K_VALUE = 100;
 
         // Set the number of KMVs we run simultaneously. We can use a higher value to get a better idea of the average
         // performance of our algorithm.
-        final int NUMBER_OF_KMVS = 5000000;
+        final int NUMBER_OF_KMVS = 50000;
 
         // Set the number of distinct items we will count to until the algorithm terminates.
-        final long DISTINCT_COUNT = 1000000;
+        final long DISTINCT_COUNT = 10000000;
 
         // Set the max number that our random number generator can generate. In order for the algorithm to work, this
         // has to be set higher than the DISTINCT_COUNT number.
@@ -36,7 +42,7 @@ public class ExpectedValueProofOfConcept extends Application {
         // Set the number of updates made to our KMVs before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values.
-        final int UPDATES_PER_FRAME = 1;
+        final int UPDATES_PER_FRAME = 1000;
 
         // Prepare line charts
         stage.setTitle("Expected value proof of concept");

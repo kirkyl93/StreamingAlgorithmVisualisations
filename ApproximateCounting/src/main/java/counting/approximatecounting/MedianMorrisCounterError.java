@@ -3,9 +3,7 @@ package counting.approximatecounting;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.Arrays;
@@ -21,18 +19,18 @@ public class MedianMorrisCounterError extends Application {
     public void start(Stage stage) {
 
         // Set the b value for the Morris Counters
-        final double B_VALUE = 1.5;
+        final double B_VALUE = 1.01;
 
         // Set the number of counters from which we will select the median and 90th percentile run
-        final int NUMBER_OF_COUNTERS = 10000;
+        final int NUMBER_OF_COUNTERS = 50000;
 
         // Set the value to which our counter counts to
-        final long COUNT_TO_VALUE = 10000000;
+        final long COUNT_TO_VALUE = 1000000000;
 
         // Set the number of updates made to our counters before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values.
-        final int UPDATES_PER_FRAME = 10;
+        final int UPDATES_PER_FRAME = 1;
 
 
         // Prepare percentage error line chart

@@ -25,11 +25,11 @@ public class MorrisAndBasicApproximateComparison extends Application {
     public void start(Stage stage) {
 
         // Set the b value for the Morris Counters
-        final double MORRIS_B_VALUE = 1.01;
+        final double MORRIS_B_VALUE = 1.000001;
 
         // Set the number of counters used for finding the average. If we set this to 100, we run 100 Morris Counters
         // and Basic Approximate Counters and take their average.
-        final int NUMBER_OF_COUNTERS = 1000;
+        final int NUMBER_OF_COUNTERS = 100;
 
         // Set the update value for the Basic Approximate Counter
         final int APPROXIMATE_COUNT_B_VALUE = 1000;

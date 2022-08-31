@@ -17,6 +17,10 @@ import java.util.Random;
  * 1) A dynamic visualisation of the estimates of the KMV, CPC and HLL instances
  * 2) A dynamic visualisation of the percentage error of the KMV, CPC and HLL instances
  * 3) A dynamic visualsation of the space usage of the KMV, CPC and HLL instances
+ *
+ * Unfortunately, because of implementation details in the DataSketches build, only single instances of the HLL
+ * and CPC can be run. This means there could be significant variances in the performance of the algorithms each
+ * time the program is run
  * **/
 
 public class ImplementationComparison extends Application {
@@ -28,13 +32,13 @@ public class ImplementationComparison extends Application {
 
         // Set the number of items we will store in our priority queue (the Kth value will be the item at the top
         // of the heap). The bigger this value, the more accurate our algorithm should be.
-        final int KMV_K_VALUE = 50000;
+        final int KMV_K_VALUE = 1000000;
 
-        // Set the LgK value for our CPC sketch
-        final int CPC_LGK_VALUE = 4;
+        // Set the LgK value for our CPC sketch (between 4 and 26)
+        final int CPC_LGK_VALUE = 21;
 
-        // Set the LgK value for our HyperLogLog sketch
-        final int HLL_LGK_VALUE = 4;
+        // Set the LgK value for our HyperLogLog sketch (between 4 and 21)
+        final int HLL_LGK_VALUE = 21;
 
         // Set the number of distinct items we will count to until the algorithm terminates
         final long DISTINCT_COUNT = 250000000;
@@ -46,7 +50,7 @@ public class ImplementationComparison extends Application {
         // Set the number of updates made to our KMVs before refreshing the graph visualisation. The smaller this is,
         // the more detail that can be seen in the results. However, it will take the program much longer to arrive at
         // large count values
-        final int UPDATES_PER_FRAME = 10;
+        final int UPDATES_PER_FRAME = 10000;
 
         // Prepare line charts
         stage.setTitle("Comparing percentage error of implementations of distinct counting");

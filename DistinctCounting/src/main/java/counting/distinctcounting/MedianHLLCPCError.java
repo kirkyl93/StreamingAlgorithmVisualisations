@@ -13,6 +13,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/** This class runs Apache DataSketches' implementations of HLL and CPC a user-defined number of times and plots the
+ * median and 90th percentile error recorded. This class creates a single chart:
+ * 1) A static visualisation of the median and 90th percentile errors as the true count increases
+ *
+ * Unfortunately it was not possible to provide a dynamic visualisation because of the implementation details of the
+ * DataSketches builds. The final chart, once generated (it may take a while when NUMBER_OF_SKETCHES/NUMBER_OF_ITERATIONS
+ * is large or when UPDATES_PER_ITERATION is low) should provide good information on the performance of the algorithms.
+ * c
+ */
+
 public class MedianHLLCPCError extends Application {
 
     @Override
@@ -20,7 +30,7 @@ public class MedianHLLCPCError extends Application {
 
         Random rand = new Random();
 
-        // Set this value between 4 and 21. This controls the sketch memory usage for HLL and CPC.
+        // Set this value between 4 and 21. This controls the sketch memory usage for HLL and CPC (between 4 and 21)
         int LG_K_VALUE = 10;
 
         // Set the number of HLL and CPCs run simultaneously

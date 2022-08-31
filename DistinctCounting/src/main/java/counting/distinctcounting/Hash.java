@@ -2,6 +2,11 @@ package counting.distinctcounting;
 
 import java.util.Random;
 
+/** An abstract class for k-wise independent hash functions. Child classes are required to implement the hashFunction
+ * method
+ *
+ */
+
 public abstract class Hash {
 
     private final long p = 887213367811L;
@@ -28,7 +33,5 @@ public abstract class Hash {
     public long getB() {
         return b;
     }
-
-
 
 }
