@@ -9,12 +9,15 @@ Approximate Counting
 - An implementation of a basic approximate counter
 - A collection of dynamic visualisations testing the real-world performances of both the Morris and basic approximate counter
 
+![Morris Counter](images/Morris_percentage_error.PNG)
 
 Distinct Counting
 
 - An implementation of the k-Minimum Values (KMV) algorithm
 - A collection of dynamic visualisations testing the real-world performance of the KMV, including against implementations of other streaming algorithms - HyperLogLog (HLL) and Compressed Probabilistic Counting (CPC) developed by Apache DataSketches
 - More tests to measure the performance of the HLL and CPC
+
+![Distinct Counting](images/ImplementationComparisonError.PNG)
 
 Frequency Counting
 
@@ -23,3 +26,4 @@ Frequency Counting
 - An implementation of the Count-Mean-Min Sketch, an attempt to remove the bias from the sketch's estimates
 - A dynamic visualisation comparing the performance of these algorithms 
 
+![Frequency Counting](images/Frequency_counting.PNG)
