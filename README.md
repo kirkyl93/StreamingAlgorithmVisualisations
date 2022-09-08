@@ -17,6 +17,8 @@ Distinct Counting
 - A collection of dynamic visualisations testing the real-world performance of the KMV, including against implementations of other streaming algorithms - HyperLogLog (HLL) and Compressed Probabilistic Counting (CPC) developed by Apache DataSketches
 - More tests to measure the performance of the HLL and CPC
 
+![Distinct Counting](images/ImplementationComparisonError.PNG)
+
 Frequency Counting
 
 - An implementation of the original Count-Min Sketch
@@ -24,3 +26,4 @@ Frequency Counting
 - An implementation of the Count-Mean-Min Sketch, an attempt to remove the bias from the sketch's estimates
 - A dynamic visualisation comparing the performance of these algorithms 
 
+![Frequency Counting](images/Frequency_counting.PNG)
