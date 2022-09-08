@@ -9,6 +9,7 @@ Approximate Counting
 - An implementation of a basic approximate counter
 - A collection of dynamic visualisations testing the real-world performances of both the Morris and basic approximate counter
 
+![Morris Counter](Morris_percentage_error.PNG)
 
 Distinct Counting
 
