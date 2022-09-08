@@ -30,10 +30,10 @@ public class CountMinSketchesComparison extends Application {
         Random rand = new Random();
 
         // This sets the d value of the count-min sketch
-        final int NUMBER_OF_HASH_FUNCTIONS = 7;
+        final int NUMBER_OF_HASH_FUNCTIONS = 11;
 
         // This sets the t value of the count-min sketch
-        final int NUMBER_OF_SLOTS_PER_ROW = 200;
+        final int NUMBER_OF_SLOTS_PER_ROW = 500;
 
         // Set the number of times the update function is called
         final long UNIQUE_ITEMS_TO_ADD = 10000000;
@@ -97,13 +97,13 @@ public class CountMinSketchesComparison extends Application {
         LINE_CHART_MAX_ERROR.setCreateSymbols(false);
 
         Stage fourthStage = new Stage();
-        fourthStage.setTitle("Percentage of items with error levels above the guarantee");
+        fourthStage.setTitle("Percentage of items with estimate error levels above epsilonW");
         final NumberAxis distinctItems4 = new NumberAxis();
         final NumberAxis errorPercentage = new NumberAxis();
         distinctItems4.setLabel("Distinct Items");
-        errorPercentage.setLabel("Percentage of items with estimates above epsilonW");
+        errorPercentage.setLabel("Percentage of items with estimate errors above epsilonW");
         final LineChart<Number, Number> LINE_CHART_ERROR_PERCENTAGE = new LineChart<>(distinctItems4, errorPercentage);
-        LINE_CHART_ERROR_PERCENTAGE.setTitle("Percentage of items with error levels above the theoretical guarantee");
+        LINE_CHART_ERROR_PERCENTAGE.setTitle("Percentage of items with estimate errors above epsilonW");
         LINE_CHART_ERROR_PERCENTAGE.setAnimated(false);
         LINE_CHART_ERROR_PERCENTAGE.setCreateSymbols(false);
 
