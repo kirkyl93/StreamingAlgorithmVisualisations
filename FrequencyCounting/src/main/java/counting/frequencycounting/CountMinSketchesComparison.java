@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.Map;
 import java.util.Random;
@@ -30,10 +31,10 @@ public class CountMinSketchesComparison extends Application {
         Random rand = new Random();
 
         // This sets the d value of the count-min sketch
-        final int NUMBER_OF_HASH_FUNCTIONS = 11;
+        final int NUMBER_OF_HASH_FUNCTIONS = 7;
 
         // This sets the t value of the count-min sketch
-        final int NUMBER_OF_SLOTS_PER_ROW = 500;
+        final int NUMBER_OF_SLOTS_PER_ROW = 200;
 
         // Set the number of times the update function is called
         final long UNIQUE_ITEMS_TO_ADD = 10000000;
@@ -42,13 +43,18 @@ public class CountMinSketchesComparison extends Application {
         final long MAX_ITEM_TO_ADD = 400000000;
 
         // Set the probability that an item has a weight > 1. 0.5 represents a 50% chance
-        final double PROBABILITY_OF_LARGE_UPDATE_WEIGHT = 0.001;
+        final double PROBABILITY_OF_LARGE_UPDATE_WEIGHT = 0.5;
 
         // In the case that the item is to have a weight > 1, set the upper limit of this weight to be added
-        final int MAX_WEIGHT_TO_ADD = 40000000;
+        final int MAX_WEIGHT_TO_ADD = 400000;
 
         // Set the number of update operations per frame update
-        final int UPDATES_PER_FRAME = 5000;
+        final int UPDATES_PER_FRAME = 500;
+
+        // As it becomes increasingly taxing to calculate errors as the hash set increases in size, it can be helpful
+        // to keep increasing the item updates per frame
+
+        final int ADDITION_TO_UPDATES_EACH_FRAME = 100;
 
 
 
@@ -79,9 +85,12 @@ public class CountMinSketchesComparison extends Application {
         final NumberAxis distinctItems2 = new NumberAxis();
         final NumberAxis percentage = new NumberAxis();
         distinctItems2.setLabel("Distinct Items");
-        percentage.setLabel("Error");
+        percentage.setLabel("Average error");
+        distinctItems2.tickLabelFontProperty().set(Font.font(20));
+        percentage.tickLabelFontProperty().set(Font.font(20));
         final LineChart<Number, Number> LINE_CHART_PERCENTAGE_TOTAL_WEIGHT = new LineChart<>(distinctItems2, percentage);
         LINE_CHART_PERCENTAGE_TOTAL_WEIGHT.setTitle("Average error as a percentage of total weights");
+        LINE_CHART_PERCENTAGE_TOTAL_WEIGHT.setStyle("-fx-font-size: " + 24 + "px;");
         LINE_CHART_PERCENTAGE_TOTAL_WEIGHT.setAnimated(false);
         LINE_CHART_PERCENTAGE_TOTAL_WEIGHT.setCreateSymbols(false);
 
@@ -89,9 +98,12 @@ public class CountMinSketchesComparison extends Application {
         thirdStage.setTitle("Max error observed as a percentage of total weights");
         final NumberAxis distinctItems3 = new NumberAxis();
         final NumberAxis maxError = new NumberAxis();
+        distinctItems3.tickLabelFontProperty().set(Font.font(20));
+        maxError.tickLabelFontProperty().set(Font.font(20));
         distinctItems3.setLabel("Distinct Items");
         maxError.setLabel("Max error");
         final LineChart<Number, Number> LINE_CHART_MAX_ERROR = new LineChart<>(distinctItems3, maxError);
+        LINE_CHART_MAX_ERROR.setStyle("-fx-font-size: " + 24 + "px;");
         LINE_CHART_MAX_ERROR.setTitle("Max error observed as a percentage of total weights");
         LINE_CHART_MAX_ERROR.setAnimated(false);
         LINE_CHART_MAX_ERROR.setCreateSymbols(false);
@@ -168,6 +180,7 @@ public class CountMinSketchesComparison extends Application {
             double maxCMSError;
             double maxCMSCError;
             double maxCMMSError;
+            int iteration = 0;
 
 
             @Override
@@ -237,10 +250,6 @@ public class CountMinSketchesComparison extends Application {
                 double cmMeanPercentageError = 0;
                 double cmMeanFailurePercentage = 0;
 
-
-
-
-
                 long currentCount = trueFrequencyCounter.items.size();
                 if (currentCount > 0) {
 
@@ -285,7 +294,7 @@ public class CountMinSketchesComparison extends Application {
                 errorPercentageAllowed.getData().add(new XYChart.Data<>(currentCount, percentageGuarantee));
 
                 // Update the sketches with new items
-                for (int i = 0; i < UPDATES_PER_FRAME; i++) {
+                for (int i = 0; i < UPDATES_PER_FRAME + iteration * ADDITION_TO_UPDATES_EACH_FRAME; i++) {
 
                     long itemToAdd = rand.nextLong(MAX_ITEM_TO_ADD);
 
@@ -303,6 +312,7 @@ public class CountMinSketchesComparison extends Application {
 
                 }
                 currentDistinctCount = trueFrequencyCounter.items.size();
+                iteration++;
 
             }
         }.start();
